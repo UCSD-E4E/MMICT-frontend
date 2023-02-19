@@ -1,25 +1,40 @@
-import logo from './logo.svg';
+import React from 'react';
+import {
+  MapContainer,
+  TileLayer,
+  useMap,
+  Polygon
+} from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { statesData } from './data';
 import './App.css';
 
-function App() {
+const center = [40.63463151377654, -97.89969605983609];
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div id='container'>
+      <h1>Mangrove Monitoring</h1>
+      <div >
+        <MapContainer
+          center={[18.173094, -77.318759]}
+          zoom={10}
+          style={{ width: '50vw', height: '60vh', marginLeft:'25vw'}}
+          className="map"
         >
-          Learn React
-        </a>
-      </header>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {/*
+          <Marker position={[51.505, -0.09]}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker> */}
+        </MapContainer>
+      </div>
     </div>
+
   );
 }
-
-export default App;
