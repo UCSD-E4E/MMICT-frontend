@@ -1,0 +1,34 @@
+#container {
+    height: 100vh;
+    background-color: #B2AC88;
+  }
+
+#navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2vw 0 2vw;
+}
+
+#navbar-right {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#navbar-right p {
+  padding: 0 5px 0 5px;
+}
+
+#progress-bar {
+  margin: 2vh;
+  background-color: gray;
+}
+
+#classification {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2vw 0 2vw;
+}
+
+#stage {
+  background-color: blanchedalmond;
+}
