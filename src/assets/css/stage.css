@@ -23,3 +23,15 @@
   position: absolute;
   z-index: 1;
 }
+
+.stage-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  margin: 1em 0;
+}
+
+.stage-upload button {
+  width: 30%;
+}

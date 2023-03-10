@@ -18,6 +18,37 @@ export default function Stage() {
         setSelected(value);
         setOpen(false);
     }
+
+    const [selectedFile, setSelectedFile] = useState(null)
+
+    const handleSelectFile = (event) => {
+        setSelectedFile(event.target.files[0]);
+    }
+
+    const handleUpload = () => {
+        console.log('Uploading file: ' + selectedFile.name);
+    }
+
+    var stage = null;
+    switch(selected) {
+        case 'Upload':
+        stage = (<div className='stage-upload'>
+                    <h1>Upload</h1>
+                    <input type='file' onChange={handleSelectFile}></input>
+                    <button onClick={handleUpload}>Upload</button>
+                </div>);
+        break;
+        case 'Classify':
+        stage = (<div className='stage-classify'>
+                    <h1>Classify</h1>
+                    <label>Data Type</label>
+                    <div>Dropdown</div>
+                    <label>Model Type</label>
+                    <div>Dropdown</div>
+                    <button>Classify</button>
+                </div>)
+        break;
+    } 
     
     return (
         <div className='stage'>
@@ -32,9 +63,7 @@ export default function Stage() {
                     ))}
                 </div>}
             </div>
-            <div>
-                {selected}
-            </div>
+            {stage}
         </div>
   )
 }
