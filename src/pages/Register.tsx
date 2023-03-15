@@ -1,8 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
 import Header from "../components/Header"
+import axios, { AxiosError } from "axios";
 
 export default function Login() {
+  const [error, setError] = useState("");
   const [username, setUser] = useState<string>("Default");
   function handlefirst(event: React.ChangeEvent<HTMLInputElement>) {
     setUser(event.currentTarget.value);
@@ -20,14 +22,29 @@ export default function Login() {
     "password": password
   }
 
-  const post = () => {
+  const post = async() => {
     //Check if passwords match 
     if (password !== confirm) {
       alert("Passwords don't match");
     }
     else {
       //Complete the post request 
-      console.log(updatedData)
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/auth/signup",
+          updatedData
+        );
+          console.log(updatedData)
+          console.log(response)
+        }
+        catch (err) {
+            if (err && err instanceof AxiosError)
+              setError(err.response?.data.message);
+            else if (err && err instanceof Error) setError(err.message);
+      
+            console.log("Error: ", err);
+          }
+      /*
       fetch('http://localhost:8000/auth/signup', {
         method: 'POST',
         body: JSON.stringify({
@@ -49,7 +66,7 @@ export default function Login() {
       .then(console.log)
       .catch(err => {
         console.log(err.message);
-      });
+      }); */
     }
   }
   return (
