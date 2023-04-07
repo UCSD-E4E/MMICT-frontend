@@ -24,6 +24,15 @@ export default function Stage() {
 
     const handleUpload = () => {
         console.log('Uploading file: ' + selectedFile.name);
+
+        let formData = new FormData();
+        formData.append("image", selectedFile);
+
+        // development endpoint
+        fetch('http://localhost:8000/upload/', {
+            method: 'POST',
+            body: formData
+        });
     }
 
     var stage = null;
