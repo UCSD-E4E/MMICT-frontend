@@ -3,8 +3,10 @@ import {
     TileLayer,
     LayersControl,
     useMap,
-    Polygon
+    Polygon, 
+    GeoJSON
   } from 'react-leaflet';
+  import mapData from "./Classify.json"
   import React from 'react';
 
 const center = [40.63463151377654, -97.89969605983609];
@@ -16,7 +18,9 @@ export default function LeafletMap() {
           zoom={10}
           style={{ width: '50vw', height: '60vh', marginLeft:'25vw'}}
           className="map"
+          
         >
+          <GeoJSON data={mapData.features}/>
           <LayersControl>
           <BaseLayer checked name="OpenStreetMap">
           <TileLayer
