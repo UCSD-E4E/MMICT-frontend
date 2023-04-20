@@ -1,22 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../assets/css/stage.css"
 import Dropdown from "../components/Dropdown.js";
-
-// notes: hooks can only be used in function components not class components
-// what are class components?
+import XItemList from './XitemList.js';
 
 export default function Stage() {
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
     const modelTypes = ['XGBoost', 'Random Forest', 'Neural Network']
+    
 
     // state needs to be raised here because the parent needs access to selected
-    const [option, setOption] = useState(options[0])
+    // varius dropdown selections
+    const [option, setOption] = useState(options[0]) 
     const [dataType, setDataType] = useState(dataTypes[0])
     const [modelType, setModelType] = useState(modelTypes[0])
 
+    // file selection
     const [selectedFile, setSelectedFile] = useState(null)
+
+    // xlist
+    const [XItems, setXItems] = useState([])
 
     const handleSelectFile = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -57,11 +61,10 @@ export default function Stage() {
         case 'Classifications':
             stage = (<div className='stage-classifications'>
                         <h1>Classifications</h1>
-                        <div>
-                            <label>Xgb-2-16-23.shp</label>
-                            <button>X</button>
-                        </div>
+                        <XItemList XItems={XItems} setXItems={setXItems}/>
                     </div>)
+            break;
+        default:
             break;
     }
     
