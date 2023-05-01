@@ -33,10 +33,33 @@ export default function Stage() {
         formData.append("image", selectedFile);
 
         // development endpoint
-        fetch('http://localhost:8000/upload/', {
+        const uploadEndpoint = 'http://localhost:8000/upload/'
+        fetch(uploadEndpoint, {
             method: 'POST',
             body: formData
         });
+    }
+
+    const handleClassify = () => {
+
+        const classifyParams = {
+            dataType: dataType,
+            modelType: modelType
+        };
+
+        const classifyReq = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+          body: JSON.stringify(classifyParams)
+        };
+
+        // development endpoint
+        const classifyEndpoint = 'http://localhost:8000/classify/'
+        fetch(classifyEndpoint, classifyReq).then(r =>
+            console.log(r)
+        );
     }
 
     var stage = null;
@@ -55,7 +78,7 @@ export default function Stage() {
                         <Dropdown options={dataTypes} selected={dataType} setSelected={setDataType}/>
                         <label>Model Type</label>
                         <Dropdown options={modelTypes} selected={modelType} setSelected={setModelType}/>
-                        <button>Classify</button>
+                        <button onClick={handleClassify}>Classify</button>
                     </div>)
             break;
         case 'Classifications':
