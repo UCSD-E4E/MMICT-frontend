@@ -2,7 +2,7 @@ import React from 'react';
 import LeafletMap from '../components/LeafletMap';
 import '../assets/css/visualization.css';
 import Header from "../components/Header"
-import Stage from "../components/Stage.js"
+import Stage from "../components/Stage"
 
 export default function Visualization() {
   return (

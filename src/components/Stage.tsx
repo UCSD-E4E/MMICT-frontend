@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "../assets/css/stage.css"
-import Dropdown from "../components/Dropdown.js";
-import XItemList from './XitemList.js';
+import Dropdown from "./Dropdown";
+import XItemList from './XitemList';
 
 export default function Stage() {
 
@@ -12,25 +12,27 @@ export default function Stage() {
 
     // state needs to be raised here because the parent needs access to selected
     // varius dropdown selections
-    const [option, setOption] = useState(options[0]) 
-    const [dataType, setDataType] = useState(dataTypes[0])
-    const [modelType, setModelType] = useState(modelTypes[0])
+    const [option, setOption] = useState<String>(options[0]) 
+    const [dataType, setDataType] = useState<String>(dataTypes[0])
+    const [modelType, setModelType] = useState<String>(modelTypes[0])
 
     // file selection
-    const [selectedFile, setSelectedFile] = useState(null)
+    const [selectedFile, setSelectedFile] = useState<File>()
 
     // xlist
-    const [XItems, setXItems] = useState([])
+    const [XItems, setXItems] = useState<String[]>()
 
-    const handleSelectFile = (event) => {
-        setSelectedFile(event.target.files[0]);
+    const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { files } = e.target;
+        const selectedFiles = files as FileList;
+        setSelectedFile(selectedFiles?.[0]);
     }
 
     const handleUpload = () => {
-        console.log('Uploading file: ' + selectedFile.name);
+        console.log('Uploading file: ' + selectedFile?.name);
 
         let formData = new FormData();
-        formData.append("image", selectedFile);
+        formData.append("image", selectedFile as File);
 
         // development endpoint
         const uploadEndpoint = 'http://localhost:8000/upload/'
@@ -84,7 +86,7 @@ export default function Stage() {
         case 'Classifications':
             stage = (<div className='stage-classifications'>
                         <h1>Classifications</h1>
-                        <XItemList XItems={XItems} setXItems={setXItems}/>
+                        <XItemList XItems={XItems as String[]} setXItems={setXItems}/>
                     </div>)
             break;
         default:

@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import "../assets/css/dropdown.css";
 
-// props = {
-//     options: [],
-//     selected: '',
-//     setSelected: function
-// }
-export default function Dropdown(props) {
-    const [open, setOpen] = useState(false)
+interface DropdownProps {
+    options: String[],
+    selected: String,
+    setSelected: (value: String)=>void
+};
+
+export default function Dropdown(props: DropdownProps) {
+    const [open, setOpen] = useState<boolean>(false)
 
     const handleOpen = () => {
         setOpen((prev) => !prev)
     }
 
-    const handleSelectOption = (value) => {
+    const handleSelectOption = (value: String) => {
         props.setSelected(value);
         setOpen(false);
     }
@@ -22,8 +23,8 @@ export default function Dropdown(props) {
         <div className='dropdown'>
             <div className='dropdown-button' onClick={handleOpen}>{props.selected}</div>
             {open && <div className='dropdown-options'>
-                {props.options.map(option => (
-                    <div className='dropdown-option' onClick={() => handleSelectOption(option)} key={option}>
+                {React.Children.map(props.options, (option) => (
+                    <div className='dropdown-option' onClick={() => handleSelectOption(option)}>
                         {option}
                     </div>
                 ))}
