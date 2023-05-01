@@ -4,8 +4,17 @@ import { useState } from "react";
 import '../assets/css/Login.css';
 import axios, { AxiosError } from "axios";
 import Header from "../components/Header"
+import { useAuth0 } from "@auth0/auth0-react";
 
-export default function Login() {
+
+const LoginButton = () => {
+  const { loginWithRedirect } = useAuth0();
+
+  return <button onClick={() => loginWithRedirect()}>Log In</button>;
+};
+export default LoginButton;
+
+/*export default function Login() {
   const [error, setError] = useState("");
   const signIn = useSignIn();
   const onSubmit = async (values: any) => {
@@ -51,4 +60,4 @@ export default function Login() {
     </>
 
   )
-}
+}*/
