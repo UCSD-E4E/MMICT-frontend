@@ -12,6 +12,7 @@ import Home from "./pages/HomePage"
 import Visualization from "./pages/Visualization"
 import Settings from "./pages/Settings"
 import Logout from "./pages/Logout"
+import AboutUs from './pages/AboutUs';
 
 
 const router = createBrowserRouter([
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/Login" ,
     element: <Login />
+  },
+  {
+    path: "/AboutUs" ,
+    element: <AboutUs />
   },
   {
     path: "/Register" ,
