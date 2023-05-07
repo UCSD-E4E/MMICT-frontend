@@ -1,0 +1,19 @@
+.dropdown {
+
+}
+
+.dropdown div {
+  text-align: center;
+  background-color:white;
+  width: 16em;
+  height: 2em;
+  line-height: 2em;
+}
+
+/*need to change it so width scales to the longest option,
+ probably has to be done in javascript on the other end*/
+.dropdown-options {
+  margin-top: 1em;
+  position: absolute;
+  z-index: 1;
+}
