@@ -11,6 +11,8 @@ import Register from "./pages/Register"
 import Home from "./pages/HomePage"
 import Visualization from "./pages/Visualization"
 import Settings from "./pages/Settings"
+import Logout from "./pages/Logout"
+import AboutUs from './pages/AboutUs';
 
 
 const router = createBrowserRouter([
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
     element: <Login />
   },
   {
+    path: "/AboutUs" ,
+    element: <AboutUs />
+  },
+  {
     path: "/Register" ,
     element: <Register />
   },
@@ -33,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: "/Settings" ,
     element: <Settings />
+  },
+  {
+    path: "/Logout" ,
+    element: <Logout />
   }
 ])
 export default function App() {
