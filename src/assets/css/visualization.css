@@ -1,12 +1,13 @@
 #container {
-    height: 100vh;
+    height: 100;
     background-color: #B2AC88;
   }
 
 #navbar {
   display: flex;
   justify-content: space-between;
-  padding: 0 2vw 0 2vw;
+  height: 100px;
+  padding: 50 2vw 0 2vw;
 }
 
 #navbar-right {
@@ -26,5 +27,6 @@
 #classification {
   display: flex;
   justify-content: space-between;
+  
   padding: 0 2vw 0 2vw;
 }
