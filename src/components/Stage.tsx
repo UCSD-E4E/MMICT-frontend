@@ -95,7 +95,6 @@ export default function Stage() {
     
     return (
         <div className='stage'>
-            <h1>Stage</h1>
             <Dropdown options={options} selected={option} setSelected={setOption}/>
             {stage}
         </div>

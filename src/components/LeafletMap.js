@@ -16,7 +16,7 @@ export default function LeafletMap() {
         <MapContainer
           center={[18.173094, -77.318759]}
           zoom={10}
-          style={{ width: '50vw', height: '60vh', marginLeft:'25vw'}}
+          style={{ width: '50vw', height: '60vh'}} 
           className="map"
           
         >
