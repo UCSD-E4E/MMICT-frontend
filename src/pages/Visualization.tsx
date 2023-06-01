@@ -3,6 +3,7 @@ import LeafletMap from '../components/LeafletMap';
 import '../assets/css/visualization.css';
 import AppBar from "../components/MenuBar"
 import Stage from "../components/Stage"
+import ProgressBar from "@ramonak/react-progress-bar";
 
 export default function Visualization() {
   return (
@@ -12,9 +13,15 @@ export default function Visualization() {
       <div style={{height: 65}}/> 
       {/* This feels really wrong ^, there must be some other way to start the page lower than the appbar, 
       is it putting it on app.tsx page rather than every page right */}
-      <div id='progress-bar'>
-        <p>progress bar component 100%</p>
-      </div>
+      <ProgressBar 
+        className='progress-bar'
+        barContainerClassName='progress-bar-container'
+        labelClassName='progress-bar-label'
+        bgColor='#5E7444'
+        //Make some call to websocket here
+        completed={60}
+        animateOnRender={true}
+      />
       <div id='classification'>
         <Stage />
         <LeafletMap />
