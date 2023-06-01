@@ -1,19 +1,41 @@
 .dropdown {
-
+  font-size: 2.5rem;
+  border: 2px solid #DCDCDC;
+  border-radius: 15px;
 }
 
 .dropdown div {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dropdown-button {
   text-align: center;
   background-color:white;
-  width: 16em;
-  height: 2em;
-  line-height: 2em;
+  width: 7em;
+  max-height: 1.75em;
+  line-height: 1.75em;
+  border-radius: 15px;
+  padding: 0 0.5em;
+}
+
+.dropdown-option {
+  text-align: center;
+  background-color:white;
+  width: 7em; /*umm this is jank need to make more responisve/relative*/
+  height: 1.75em;
+  line-height: 1.75em;
 }
 
 /*need to change it so width scales to the longest option,
  probably has to be done in javascript on the other end*/
 .dropdown-options {
-  margin-top: 1em;
+  background-color: white;
+  margin-top: 0.5em;
   position: absolute;
   z-index: 1;
+  padding: 0 0.5em; /*jank lel*/
+  border-radius: 15px;
+  box-shadow: 0px 4px 4px gray;
 }

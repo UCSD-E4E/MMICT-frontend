@@ -1,28 +1,11 @@
 .stage {
-    background-color: blanchedalmond;
+    background-color: white;
     width: 30vw;
     display: flex;
     flex-direction: column;
     align-items: center;
+    
   }
-
-.dropdown {
-
-}
-
-.dropdown div {
-  text-align: center;
-  background-color:white;
-  width: 8em;
-  height: 2em;
-  line-height: 2em;
-}
-
-.dropdown-options {
-  margin-top: 1em;
-  position: absolute;
-  z-index: 1;
-}
 
 .stage-upload {
   display: flex;

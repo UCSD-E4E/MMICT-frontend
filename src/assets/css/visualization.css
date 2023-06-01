@@ -1,21 +1,6 @@
 #container {
-    height: 100vh;
-    background-color: #B2AC88;
-  }
-
-#navbar {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 2vw 0 2vw;
-}
-
-#navbar-right {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-#navbar-right p {
-  padding: 0 5px 0 5px;
+  height: 100;
+  background-color: #BECEAB;
 }
 
 #progress-bar {
@@ -25,6 +10,6 @@
 
 #classification {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding: 0 2vw 0 2vw;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../assets/css/dropdown.css";
 
 interface DropdownProps {
@@ -10,14 +10,26 @@ interface DropdownProps {
 export default function Dropdown(props: DropdownProps) {
     const [open, setOpen] = useState<boolean>(false)
 
-    const handleOpen = () => {
-        setOpen((prev) => !prev)
+    // i don't know what type event should be
+    const handleOpen = (e: { stopPropagation: () => void; }) => {
+        e.stopPropagation();
+        setOpen(() => !open)
     }
 
     const handleSelectOption = (value: String) => {
         props.setSelected(value);
         setOpen(false);
     }
+
+    // close the menu whenever we click outside
+    useEffect(() => {
+        const handler =  () => setOpen(false);
+        window.addEventListener("click", handler);
+
+        return () => {
+            window.removeEventListener("click", handler);
+        }
+    })
 
     return (
         <div className='dropdown'>
