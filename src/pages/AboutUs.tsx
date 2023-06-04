@@ -1,10 +1,10 @@
 import React from "react";
-import AppBar from "../components/MenuBar"
+import {MenuBar} from "../components/MenuBar"
 
 export default function AboutUs() {
     return (
       <div>
-        <AppBar/>
+        <MenuBar/>
         <h1>About Us</h1>
       </div>
       

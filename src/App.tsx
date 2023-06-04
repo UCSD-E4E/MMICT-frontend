@@ -8,7 +8,7 @@ import {createBrowserRouter,
 
 import Home from "./pages/HomePage"
 import Visualization from "./pages/Visualization"
-import Logout from "./pages/Logout"
+import Profile from "./pages/Profile"
 import AboutUs from './pages/AboutUs';
 
 
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
     element: <Visualization />
   },
   {
-    path: "/Logout" ,
-    element: <Logout />
+    path: "/Profile" ,
+    element: <Profile />
   }
 ])
 export default function App() {

@@ -19,6 +19,7 @@ body {
     position: fixed;
     line-height: 65px;
     text-align: center;
+    
 }
 
 .nav div.logo {
@@ -30,12 +31,13 @@ body {
 
 .nav div.logo a {
     text-decoration: none;
+    font-weight: bold;
     color: black;
-    font-size: 2.5rem;
+    font-size: 3rem;
 }
 
 .nav div.logo a:hover {
-    color: #607744;
+    color: #00E676;
 }
 
 .nav div.main_list {
@@ -67,7 +69,7 @@ body {
 }
 
 .nav div.main_list ul li a:hover {
-    color: #607744;
+    color: #00E676;
 }
 
 
@@ -141,6 +143,20 @@ body {
         display: block;
     }
 }
+
+button{
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    font-size: 2.4rem;
+    text-decoration: none;
+    font-family: "Quicksand", sans-serif;
+    padding-right: 3rem;
+}
+
+button:hover {
+    color: #00E676;
+  }
 
 
 /* Animation */
