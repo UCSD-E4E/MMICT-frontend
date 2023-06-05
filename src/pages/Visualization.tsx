@@ -18,7 +18,7 @@ export default function Visualization() {
         barContainerClassName='progress-bar-container'
         labelClassName='progress-bar-label'
         bgColor='#5E7444'
-        //Make some call to websocket here
+        /* Make some call to websocket here for progress value */
         completed={60}
         animateOnRender={true}
       />
