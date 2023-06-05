@@ -2,14 +2,17 @@
   height: 100;
   background-color: #BECEAB;
 }
-
-#progress-bar {
-  margin: 2vh;
-  background-color: gray;
-}
-
 #classification {
   display: flex;
   justify-content: space-evenly;
   padding: 0 2vw 0 2vw;
+}
+.progress-bar{
+  margin:2vh;
+  background-color: lightgrey;
+}
+.progress-bar-label{
+  font-size: small;
+  margin:1vw;
+  color:white;
 }
