@@ -53,7 +53,7 @@ export default function LeafletMap() {
               </Popup>
             </Marker> */}
           </MapContainer>
-          <button style={{marginRight:"20vw"}}>Download</button>
+          <button style={{marginLeft:"67vw", fontSize:"1.5vw"}}>Download</button>
         </div>
     )
 }
