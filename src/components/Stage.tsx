@@ -3,24 +3,89 @@ import "../assets/css/stage.css"
 import Dropdown from "./Dropdown";
 import XItemList from './XitemList';
 
+let socket:WebSocket;
+
+// Callback for status updates
+function wsStatusUpdate(status: String){
+    console.log("status is now:" + status)
+}
+// Callback for geojson
+function receiveGeoJson(geojson: String){
+    console.log("recieved geojson")
+}
+
+function connectWebSocket(addr: String) {
+    // WebSocket connection
+    socket = new WebSocket(`ws://${addr}`);
+
+    // Connection opened
+    socket.addEventListener('open', () => {
+      // this is where you can allow things to be sent on the websocket
+      console.log('WebSocket connection established.');
+    });
+
+    // Listen for messages
+    socket.addEventListener('message', (event) => {
+      console.log(event.data)
+      const msg = JSON.parse(event.data)
+      // call callbacks
+      wsStatusUpdate(msg.status) 
+      if(msg.geojson){
+          receiveGeoJson(msg.geojson)
+      }
+      console.log('Received message:', msg);
+    });
+    // Connection closed
+    socket.addEventListener('close', () => {
+      console.log('WebSocket connection closed.');
+    });
+  }
+
 export default function Stage() {
+
+    connectWebSocket('http://localhost:8000');
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
     const modelTypes = ['XGBoost', 'Random Forest', 'Neural Network']
-    
+    const [images, setImages] = useState<String[]>([])
+
+    useEffect(() => {
+        const imagesEndpoint = 'http://localhost:8000/images'
+        fetch(imagesEndpoint, {
+            method: 'GET',
+            body: JSON.stringify({ 
+                username: 'Edward', // TODO: pass in username
+            }),
+        }).then((r: any) => {
+            setImages(r)
+        })
+    }, [])
 
     // state needs to be raised here because the parent needs access to selected
     // varius dropdown selections
     const [option, setOption] = useState<String>(options[0]) 
     const [dataType, setDataType] = useState<String>(dataTypes[0])
     const [modelType, setModelType] = useState<String>(modelTypes[0])
+    const [selectedImage, setSelectedImage] = useState<String>(images[0])
 
     // file selection
     const [selectedFile, setSelectedFile] = useState<File>()
 
     // xlist
-    const [XItems, setXItems] = useState<String[]>()
+    const [XItems, setXItems] = useState<any[]>(['aaa', 'bbb'])
+
+    useEffect(() => {
+        const classificationsEndpoint = 'http://localhost:8000/classifications'
+        fetch(classificationsEndpoint, {
+            method: 'GET',
+            body: JSON.stringify({
+                username: 'Edward'
+            })
+        }).then((r: any) => {
+            setXItems(r)
+        })
+    }, [])
 
     const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target;
@@ -28,7 +93,12 @@ export default function Stage() {
         setSelectedFile(selectedFiles?.[0]);
     }
 
+    // function callback for upload button click
     const handleUpload = () => {
+        if (!selectedFile) {
+            alert('No file selected!')
+        }
+
         console.log('Uploading file: ' + selectedFile?.name);
 
         let formData = new FormData();
@@ -42,26 +112,16 @@ export default function Stage() {
         });
     }
 
+    // function callback for classify button click
     const handleClassify = () => {
 
         const classifyParams = {
-            dataType: dataType,
-            modelType: modelType
+            classifier_id: dataType,
+            processer_id: modelType,
+            image_ref: selectedImage
         };
 
-        const classifyReq = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-          body: JSON.stringify(classifyParams)
-        };
-
-        // development endpoint
-        const classifyEndpoint = 'http://localhost:8000/classify/'
-        fetch(classifyEndpoint, classifyReq).then(r =>
-            console.log(r)
-        );
+        socket.send(JSON.stringify(classifyParams));
     }
 
     var stage = null;
@@ -76,6 +136,8 @@ export default function Stage() {
         case 'Classify':
             stage = (<div className='stage-classify'>
                         <h1>Classify</h1>
+                        <label>Image</label>
+                        <Dropdown options={images} selected={selectedImage} setSelected={setSelectedImage}/>
                         <label>Data Type</label>
                         <Dropdown options={dataTypes} selected={dataType} setSelected={setDataType}/>
                         <label>Model Type</label>
@@ -86,7 +148,7 @@ export default function Stage() {
         case 'Classifications':
             stage = (<div className='stage-classifications'>
                         <h1>Classifications</h1>
-                        <XItemList XItems={XItems as String[]} setXItems={setXItems}/>
+                        <XItemList XItems={XItems} setXItems={setXItems}/>
                     </div>)
             break;
         default:

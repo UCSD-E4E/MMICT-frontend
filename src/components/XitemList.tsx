@@ -2,17 +2,31 @@ import React from 'react'
 import "../assets/css/xitem.css"
 
 interface XItemListProps {
-    XItems: String[],
-    setXItems: (v: String[])=>void
+    XItems: any[],
+    setXItems: (v: any[])=>void
 };
 
 export default function XItemList(props: XItemListProps) {
     const onXClicked = (value: String) => {
-        console.log('clicked x')
-        // TODO: update routes 
-        fetch('')
+        const classificationDeleteEndpoint = 'http://localhost:8000/classifications/delete'
+        fetch(classificationDeleteEndpoint, {
+            method: 'DELETE',
+            body: JSON.stringify({
+                username: 'Edward',
+                id: 0
+            })
+        })
 
-        // TODO: update routes
+        // TODO: fetch list again
+        const classificationsEndpoint = 'http://localhost:8000/classifications'
+        fetch(classificationsEndpoint, {
+            method: 'GET',
+            body: JSON.stringify({
+                username: 'Edward'
+            })
+        }).then((r: any) => {
+            props.setXItems(r)
+        })
         // props.setXItems(
             
         // )
