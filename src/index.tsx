@@ -5,10 +5,10 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 ReactDOM.render(
     <Auth0Provider
-      domain="dev-3q7zmh6aw67jttdp.us.auth0.com"
-      clientId="PVSrLMVTqIjQdMchp4KXKm5d7TuwQzP1"
+      domain={process.env.REACT_APP_AUTH0_DOMAIN!}
+      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID!}
       authorizationParams={{
-        redirect_uri: "http://localhost:3000/"
+        redirect_uri: "http://localhost:3000"
       }}
     >
       <App />
