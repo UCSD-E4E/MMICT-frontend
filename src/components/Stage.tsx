@@ -76,7 +76,7 @@ export default function Stage() {
     const [XItems, setXItems] = useState<any[]>(['aaa', 'bbb'])
 
     useEffect(() => {
-        const classificationsEndpoint = 'http://localhost:8000/classifications'
+        const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
         fetch(classificationsEndpoint, {
             method: 'GET',
             body: JSON.stringify({
@@ -105,7 +105,7 @@ export default function Stage() {
         formData.append("image", selectedFile as File);
 
         // development endpoint
-        const uploadEndpoint = 'http://localhost:8000/upload/'
+        const uploadEndpoint = `${ApiService.getApiServiceUrl()}/upload/`
         fetch(uploadEndpoint, {
             method: 'POST',
             body: formData
