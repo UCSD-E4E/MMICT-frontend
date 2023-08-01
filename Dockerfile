@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 ##### Start Deploy Container
-FROM nginx:alpine
+FROM nginx:alpine as production
 WORKDIR /usr/share/nginx/html
 
 # Clear the default pages

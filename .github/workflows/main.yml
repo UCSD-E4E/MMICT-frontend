@@ -25,4 +25,5 @@ jobs:
         context: .
         push: true
         file: ./Dockerfile
+        target: production
         tags: ghcr.io/ucsd-e4e/mmict-frontend:latest
