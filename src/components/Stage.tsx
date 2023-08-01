@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "../assets/css/stage.css"
 import Dropdown from "./Dropdown";
 import XItemList from './XitemList';
+import ApiService from '../services/ApiService';
 
 let socket:WebSocket;
 
@@ -42,8 +43,7 @@ function connectWebSocket(addr: String) {
   }
 
 export default function Stage() {
-
-    connectWebSocket('http://localhost:8000');
+    connectWebSocket(ApiService.getApiServiceUrl());
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
@@ -51,7 +51,7 @@ export default function Stage() {
     const [images, setImages] = useState<String[]>([])
 
     useEffect(() => {
-        const imagesEndpoint = 'http://localhost:8000/images'
+        const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
         fetch(imagesEndpoint, {
             method: 'GET',
             body: JSON.stringify({ 
