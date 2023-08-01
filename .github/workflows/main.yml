@@ -2,7 +2,7 @@ name: Build Docker Container
 
 on:
   push:
-    branches: [ main, feature/docker ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
   
