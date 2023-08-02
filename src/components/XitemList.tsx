@@ -1,5 +1,6 @@
 import React from 'react'
 import "../assets/css/xitem.css"
+import ApiService from '../services/ApiService';
 
 interface XItemListProps {
     XItems: any[],
@@ -8,7 +9,7 @@ interface XItemListProps {
 
 export default function XItemList(props: XItemListProps) {
     const onXClicked = (value: String) => {
-        const classificationDeleteEndpoint = 'http://localhost:8000/classifications/delete'
+        const classificationDeleteEndpoint = `${ApiService.getApiServiceUrl()}/delete`
         fetch(classificationDeleteEndpoint, {
             method: 'DELETE',
             body: JSON.stringify({
@@ -18,7 +19,7 @@ export default function XItemList(props: XItemListProps) {
         })
 
         // TODO: fetch list again
-        const classificationsEndpoint = 'http://localhost:8000/classifications'
+        const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
         fetch(classificationsEndpoint, {
             method: 'GET',
             body: JSON.stringify({
