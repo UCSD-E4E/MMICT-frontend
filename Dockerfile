@@ -1,5 +1,5 @@
 ##### Start Build Container
-FROM node:18 AS build
+FROM node:18-alpine AS build
 
 # Create a working directory to perform our build in
 WORKDIR /usr/src/app
@@ -17,6 +17,8 @@ RUN npm run build
 
 ##### Start Deploy Container
 FROM nginx:alpine as production
+EXPOSE 80
+
 WORKDIR /usr/share/nginx/html
 
 # Clear the default pages
