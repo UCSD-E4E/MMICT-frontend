@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Do the build
-RUN NODE_ENV=development npm run build
+RUN npm run build
 
 ##### Start Deploy Container
 FROM nginx:alpine as production
