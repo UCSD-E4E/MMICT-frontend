@@ -21,6 +21,9 @@ EXPOSE 80
 
 WORKDIR /usr/share/nginx/html
 
+# Copy the config files
+ADD ./conf/ /etc/nginx/
+
 # Clear the default pages
 RUN rm -rf ./*
 # Copy all static assets

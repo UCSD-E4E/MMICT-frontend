@@ -94,7 +94,7 @@ export default function Stage() {
     }
 
     // function callback for upload button click
-    const handleUpload = () => {
+    const handleUpload = async () => {
         if (!selectedFile) {
             alert('No file selected!')
         }
@@ -106,7 +106,7 @@ export default function Stage() {
 
         // development endpoint
         const uploadEndpoint = `${ApiService.getApiServiceUrl()}/upload/`
-        fetch(uploadEndpoint, {
+        await fetch(uploadEndpoint, {
             method: 'POST',
             body: formData
         });
