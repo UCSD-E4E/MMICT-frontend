@@ -13,7 +13,9 @@ export const LogoutButton: React.FC = () => {
   };
 
   return (
-    <button className="button__logout" onClick={handleLogout}>
+    // Log out button will always remain constant
+    // eslint-disable-next-line @shopify/jsx-no-hardcoded-content
+    <button type="submit" className="button__logout" onClick={handleLogout}>
       Log Out
     </button>
   );

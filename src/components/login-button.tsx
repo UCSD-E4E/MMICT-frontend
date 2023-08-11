@@ -16,7 +16,9 @@ export const LoginButton: React.FC = () => {
   };
 
   return (
-    <button className="button__login" onClick={handleLogin}>
+    // Login button will always remain constant
+    // eslint-disable-next-line @shopify/jsx-no-hardcoded-content
+    <button type="submit" className="button__login" onClick={handleLogin}>
       Log In
     </button>
   );

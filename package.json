@@ -29,7 +29,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .tsx"
   },
   "eslintConfig": {
     "extends": [
@@ -50,10 +51,11 @@
     ]
   },
   "devDependencies": {
+    "@shopify/eslint-plugin": "^42.1.0",
     "@types/geojson": "^7946.0.10",
     "@types/leaflet": "^1.9.3",
     "@typescript-eslint/parser": "^5.0.1",
-    "eslint": "^8.7.0",
+    "eslint": "^8.46.0",
     "prettier": "^2.5.1",
     "react-router-dom": "^6.8.1",
     "ts-loader": "^9.4.2",
