@@ -13,7 +13,7 @@ export const LogoutButton: React.FC = () => {
   };
 
   return (
-    <button className="button__logout" onClick={handleLogout}>
+    <button className="button__logout navlink" onClick={handleLogout}>
       Log Out
     </button>
   );

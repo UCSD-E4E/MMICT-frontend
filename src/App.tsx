@@ -10,6 +10,7 @@ import Home from "./pages/HomePage"
 import Visualization from "./pages/Visualization"
 import Profile from "./pages/Profile"
 import AboutUs from './pages/AboutUs';
+import { MenuBar } from './components/MenuBar';
 
 
 const router = createBrowserRouter([
@@ -32,6 +33,9 @@ const router = createBrowserRouter([
 ])
 export default function App() {
   return (
-    <RouterProvider router={router} />
+    <div id='app'>
+      <MenuBar></MenuBar>
+      <RouterProvider router={router} />
+    </div>
   );
 }

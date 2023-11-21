@@ -16,7 +16,7 @@ export const LoginButton: React.FC = () => {
   };
 
   return (
-    <button className="button__login" onClick={handleLogin}>
+    <button className="button__login navlink" onClick={handleLogin}>
       Log In
     </button>
   );

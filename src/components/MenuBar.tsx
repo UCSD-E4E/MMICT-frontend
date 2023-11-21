@@ -11,14 +11,14 @@ export const MenuBar = () => {
         <div className="nav">
             <div className="container">
                 <div className="logo">
-                    <a href="/">Mangrove Monitoring</a>
+                    <a href="/" className="navlink">Mangrove Monitoring</a>
                 </div>
                 <div id="mainListDiv" className="main_list">
-                    <ul className="navlinks">
-                        <li><a href="/AboutUs">About Us</a></li>
-                        <li><a href="/Visualization">Visualization</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="/Profile">Profile</a></li>
+                    <ul>
+                        <li><a className="navlink" href="/AboutUs">About Us</a></li>
+                        <li><a className="navlink" href="/Visualization">Visualization</a></li>
+                        <li><a className="navlink" href="#">Services</a></li>
+                        <li><a className="navlink" href="/Profile">Profile</a></li>
                         {!isAuthenticated && (
                             <>
                                 <LoginButton />
@@ -32,11 +32,27 @@ export const MenuBar = () => {
 
                     </ul>
                 </div>
-                <span className="navTrigger">
+                <button className="navTrigger">
                     <i></i>
                     <i></i>
                     <i></i>
-                </span>
+                </button>
+                <div id='hamburger-nav'>
+                    <a href='/AboutUs'>About Us</a>
+                    <a href="/Visualization">Visualization</a>
+                    <a href="#">Services</a>
+                    <a href="/Profile">Profile</a>
+                    {!isAuthenticated && (
+                            <>
+                                <LoginButton/>
+                            </>
+                        )}
+                        {isAuthenticated && (
+                            <>
+                                <LogoutButton />
+                            </>
+                    )}
+                </div>
             </div>
         </div>
     );
