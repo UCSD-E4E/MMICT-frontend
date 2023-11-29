@@ -4,7 +4,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LogoutButton } from "./logout-button";
 import { LoginButton } from "./login-button";
 
-export const MenuBar = () => {  
+interface MenuBarProps {
+    isHomeRoute: boolean;
+}
+
+export const MenuBar: React.FC<MenuBarProps> = ({ isHomeRoute }: MenuBarProps) => {
     const { isAuthenticated } = useAuth0();
     // hamburger dropdown menu
     const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
@@ -14,50 +18,48 @@ export const MenuBar = () => {
     };
 
     return (
-        <div className="nav">
-            <div className="nav-container">
-                <div className="logo">
-                    <a href="/" className="logo-link">Mangrove Monitoring</a>
-                </div>
-                <div id="mainListDiv" className="main_list">
-                    <a className="navlink" href="/AboutUs">About Us</a>
-                    <a className="navlink" href="/Visualization">Visualization</a>
-                    <a className="navlink" href="#">Services</a>
-                    <a className="navlink" href="/Profile">Profile</a>
+        <div className={`nav-container ${isHomeRoute ? 'isHome' : ''}`}>
+            <div className="logo">
+                <a href="/" className="logo-link">Mangrove Monitoring</a>
+            </div>
+            <div id="mainListDiv" className="main_list">
+                <a className="navlink" href="/AboutUs">About Us</a>
+                <a className="navlink" href="/Visualization">Visualization</a>
+                <a className="navlink" href="#">Services</a>
+                <a className="navlink" href="/Profile">Profile</a>
+                {!isAuthenticated && (
+                    <>
+                        <LoginButton buttonClass="navlink"/>
+                    </>
+                )}
+                {isAuthenticated && (
+                    <>
+                        <LogoutButton buttonClass="navlink"/>
+                    </>
+                )}
+            </div>
+            <button className="navTrigger" onClick={toggleHamburger}>
+                <i></i>
+                <i></i>
+                <i></i>
+            </button>
+            <div id='hamburger-nav' className={isHamburgerOpen ? 'visible' : ''}>
+                <div id="hamburger-links">
+                    <a className="hamburger-link" href="/">Home</a>
+                    <a className="hamburger-link" href='/AboutUs'>About Us</a>
+                    <a className="hamburger-link" href="/Visualization">Visualization</a>
+                    <a className="hamburger-link" href="#">Services</a>
+                    <a className="hamburger-link" href="/Profile">Profile</a>
                     {!isAuthenticated && (
-                        <>
-                            <LoginButton buttonClass="navlink"/>
-                        </>
-                    )}
-                    {isAuthenticated && (
-                        <>
-                            <LogoutButton buttonClass="navlink"/>
-                        </>
-                    )}
-                </div>
-                <button className="navTrigger" onClick={toggleHamburger}>
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                </button>
-                <div id='hamburger-nav' className={isHamburgerOpen ? 'visible' : ''}>
-                    <div id="hamburger-links">
-                        <a className="hamburger-link" href="/">Home</a>
-                        <a className="hamburger-link" href='/AboutUs'>About Us</a>
-                        <a className="hamburger-link" href="/Visualization">Visualization</a>
-                        <a className="hamburger-link" href="#">Services</a>
-                        <a className="hamburger-link" href="/Profile">Profile</a>
-                        {!isAuthenticated && (
-                                <>
-                                    <LoginButton/>
-                                </>
-                            )}
-                            {isAuthenticated && (
-                                <>
-                                    <LogoutButton/>
-                                </>
+                            <>
+                                <LoginButton/>
+                            </>
                         )}
-                    </div>
+                        {isAuthenticated && (
+                            <>
+                                <LogoutButton/>
+                            </>
+                    )}
                 </div>
             </div>
         </div>

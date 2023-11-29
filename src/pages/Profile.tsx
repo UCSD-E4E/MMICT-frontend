@@ -5,7 +5,7 @@ export default function Profile(){
   const { user } = useAuth0();
 
   React.useEffect(() => {
-    console.log(user);
+    if(user) console.log(user.picture);
   }, [user]);
 
   if (!user) {

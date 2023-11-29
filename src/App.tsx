@@ -11,7 +11,7 @@ import Visualization from "./pages/Visualization"
 import Profile from "./pages/Profile"
 import AboutUs from './pages/AboutUs';
 import { MenuBar } from './components/MenuBar';
-
+import { useEffect, useState } from 'react';
 
 const router = createBrowserRouter([
   {
@@ -32,9 +32,17 @@ const router = createBrowserRouter([
   }
 ])
 export default function App() {
+  const [isHomeRoute, setIsHomeRoute] = useState(window.location.pathname === "/");
+
+  useEffect(() => {
+    const handleRouteChange = () => setIsHomeRoute(window.location.pathname === "/");
+    window.addEventListener('popstate', handleRouteChange);
+    return () => window.removeEventListener('popstate', handleRouteChange);
+  }, []);
+
   return (
     <div id='app'>
-      <MenuBar></MenuBar>
+      <MenuBar isHomeRoute={isHomeRoute}></MenuBar>
       <RouterProvider router={router} />
     </div>
   );
