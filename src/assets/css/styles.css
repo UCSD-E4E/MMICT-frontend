@@ -42,11 +42,3 @@
     align-items: center;
     padding: .25rem;
   }
-  
-  .nav li.active {
-    background-color: #555;
-  }
-  
-  .nav li:hover {
-    background-color: #777;
-  }

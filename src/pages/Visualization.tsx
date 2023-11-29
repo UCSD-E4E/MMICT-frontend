@@ -8,7 +8,7 @@ export default function Visualization() {
   return (
     <div id='container'>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <div style={{height: 65}}/> 
+      
       {/* This feels really wrong ^, there must be some other way to start the page lower than the appbar, 
       is it putting it on app.tsx page rather than every page right */}
       <ProgressBar 
@@ -21,8 +21,12 @@ export default function Visualization() {
         animateOnRender={true}
       />
       <div id='classification'>
-        <Stage />
-        <LeafletMap />
+        <div id='left-menu'>
+          <Stage />
+        </div>
+        <div id='right-menu'>
+          <LeafletMap />
+        </div>
       </div>
     </div>
   )

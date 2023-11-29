@@ -13,11 +13,11 @@ const center = [40.63463151377654, -97.89969605983609];
 const { BaseLayer } = LayersControl;
 export default function LeafletMap() {
     return (
-      <div>
+      <div style={{ width: '100%', height: '80vh'}}>
           <MapContainer
             center={[18.173094, -77.318759]}
             zoom={10}
-            style={{ width: '50vw', height: '60vh', marginLeft:'25vw'}}
+            style={{ width: '96%', height: '100%', marginLeft: '2%', marginRight: '2%'}}
             className="map"
           >
             <GeoJSON
@@ -53,7 +53,7 @@ export default function LeafletMap() {
               </Popup>
             </Marker> */}
           </MapContainer>
-          <button style={{marginLeft:"67vw", fontSize:"1.5vw"}}>Download</button>
+          <button style={{marginLeft:"2%", fontSize:"1.5vw"}}>Download</button>
         </div>
     )
 }

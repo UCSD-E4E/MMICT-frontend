@@ -128,14 +128,12 @@ export default function Stage() {
     switch(option) {
         case 'Upload':
             stage = (<div className='stage-upload'>
-                        <h1>Upload</h1>
                         <input type='file' onChange={handleSelectFile}></input>
                         <button onClick={handleUpload}>Upload</button>
                     </div>);
             break;
         case 'Classify':
             stage = (<div className='stage-classify'>
-                        <h1>Classify</h1>
                         <label>Image</label>
                         <Dropdown options={images} selected={selectedImage} setSelected={setSelectedImage}/>
                         <label>Data Type</label>
@@ -147,7 +145,6 @@ export default function Stage() {
             break;
         case 'Classifications':
             stage = (<div className='stage-classifications'>
-                        <h1>Classifications</h1>
                         <XItemList XItems={XItems} setXItems={setXItems}/>
                     </div>)
             break;
@@ -157,6 +154,7 @@ export default function Stage() {
     
     return (
         <div className='stage'>
+            <h1>Current Service: {option}</h1>
             <Dropdown options={options} selected={option} setSelected={setOption}/>
             {stage}
         </div>
