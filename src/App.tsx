@@ -6,10 +6,11 @@ import {createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 
-import Home from "./pages/HomePage"
-import Visualization from "./pages/Visualization"
-import Profile from "./pages/Profile"
+import Home from "./pages/HomePage";
+import Visualization from "./pages/Visualization";
+import Profile from "./pages/Profile";
 import AboutUs from './pages/AboutUs';
+import Services from './pages/Services';
 import { MenuBar } from './components/MenuBar';
 import { useEffect, useState } from 'react';
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "/Profile" ,
     element: <Profile />
+  },
+  {
+    path: "/Services",
+    element: <Services />,
   }
 ])
 export default function App() {

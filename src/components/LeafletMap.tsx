@@ -13,7 +13,7 @@ const center = [40.63463151377654, -97.89969605983609];
 const { BaseLayer } = LayersControl;
 export default function LeafletMap() {
     return (
-      <div style={{ width: '100%', height: '80vh'}}>
+      <div style={{ width: '100%', height: '85vh'}}>
           <MapContainer
             center={[18.173094, -77.318759]}
             zoom={10}

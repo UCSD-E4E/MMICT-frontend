@@ -1,0 +1,41 @@
+#inner-color-layer {
+    background-color: #c3d387;
+    width: 90%;
+    height: 95%;
+    margin: auto;
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#left-profile-menu {
+    width: 25%;
+    height: 100%;
+    border-right: 2px solid #DCDCDC;
+}
+
+#profile-account {
+    margin-top: 20px;
+}
+
+#profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #000000;
+    display: block;
+}
+
+#profile-page {
+    height: 93vh;
+    display: flex;
+    flex-direction: row;
+    background-color: #f8ffe1;
+}
+
+#right-images-menu {
+    width: 75%;
+    height: 100%;
+}

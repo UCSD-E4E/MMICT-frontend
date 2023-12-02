@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
+import '../assets/css/Profile.css';
 
 export default function Profile(){
   const { user } = useAuth0();
@@ -11,9 +12,31 @@ export default function Profile(){
   if (!user) {
     return null;
   }
-
   return (
-    <div className="content-layout">
+    <div id="profile-page">
+      <div id="left-profile-menu">
+        <div id="inner-color-layer">
+          <div id="profile-account">
+            <img
+              id="profile-avatar"
+              src={user.picture}
+              alt="Profile"
+            />
+            <div className="profile-headline">
+              <h2 className="profile-title">{user.name}</h2>
+              <span className="profile-description">{user.email}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="right-images-menu">
+      </div>
+    </div>
+  );
+};
+
+/*
+<div className="content-layout">
     <h1 id="page-title" className="content__title">
       Profile Page
     </h1>
@@ -35,5 +58,4 @@ export default function Profile(){
       </div>
     </div>
   </div>
-  );
-};
+*/
