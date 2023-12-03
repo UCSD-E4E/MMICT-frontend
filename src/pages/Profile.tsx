@@ -6,7 +6,7 @@ export default function Profile(){
   const { user } = useAuth0();
 
   React.useEffect(() => {
-    if(user) console.log(user.picture);
+    if(user) console.log(user);
   }, [user]);
 
   if (!user) {
@@ -22,14 +22,15 @@ export default function Profile(){
               src={user.picture}
               alt="Profile"
             />
-            <div className="profile-headline">
-              <h2 className="profile-title">{user.name}</h2>
-              <span className="profile-description">{user.email}</span>
+            <div className="profile-info">
+              <h2 style={{ margin:5}}>{user.name}</h2>
+              <span>{user.email}</span>
             </div>
           </div>
         </div>
       </div>
       <div id="right-images-menu">
+        <h1 id="images-header" >Current Images:</h1>
       </div>
     </div>
   );

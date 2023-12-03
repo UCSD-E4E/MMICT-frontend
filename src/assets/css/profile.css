@@ -10,13 +10,19 @@
 }
 
 #left-profile-menu {
-    width: 25%;
+    width: 20%;
     height: 100%;
     border-right: 2px solid #DCDCDC;
 }
 
+#images-header {
+    font-size: 2.5rem;
+    font-family: "Quicksand", sans-serif;
+    margin-left: 3%;
+}
+
 #profile-account {
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 #profile-avatar {
@@ -26,6 +32,10 @@
     object-fit: cover;
     border: 2px solid #000000;
     display: block;
+}
+
+.profile-info {
+    font-size: large;
 }
 
 #profile-page {
