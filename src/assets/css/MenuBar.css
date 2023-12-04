@@ -13,65 +13,50 @@ body {
 
 /* Navbar section */
 
-.nav {
+.nav-container {
+    display: flex;
+    flex-direction: row;
     width: 100%;
-    height: 65px;
-    position: fixed;
-    line-height: 65px;
-    text-align: center;
-    
+    height: 7vh;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #BECEAB;
 }
 
-.nav div.logo {
-    float: left;
+.isHome {
+    position: fixed;
+    background-color: transparent;
+}
+
+.logo {
     width: auto;
     height: auto;
-    padding-left: 3rem;
+    padding-left: calc(2rem + 1vw);
 }
 
-.nav div.logo a {
+.logo a {
     text-decoration: none;
     font-weight: bold;
     color: black;
-    font-size: 3rem;
+    font-size: calc(2rem + 1vw);
 }
 
-.nav div.logo a:hover {
-    color: #00E676;
-}
-
-.nav div.main_list {
-    height: 65px;
-    float: right;
-}
-
-.nav div.main_list ul {
-    width: 100%;
-    height: 65px;
+#mainListDiv {
     display: flex;
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.nav div.main_list ul li {
+.navlink {
     width: auto;
-    height: 65px;
     padding: 0;
     padding-right: 3rem;
-}
-
-.nav div.main_list ul li a {
     text-decoration: none;
     color: black;
     line-height: 65px;
     font-size: 2.4rem;
 }
-
-.nav div.main_list ul li a:hover {
-    color: #00E676;
-}
-
 
 /* Home section */
 
@@ -82,99 +67,98 @@ body {
 	background-size:cover;
 }
 
-.navTrigger {
-    display: none;
-}
-
 .nav {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     -webkit-transition: all 0.4s ease;
     transition: all 0.4s ease;
 }
 
+/* Hambuger menu */
+.navTrigger {
+    display: none;
+    z-index: 1000;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 30px;
+    top: 15px;
+    position: fixed;
+}
+
+#hamburger-nav {
+    left: 0;
+    top: -100vh; 
+    background-color: #00E676;
+    width: 100vw;
+    height: 100vh;
+    visibility: hidden;
+    opacity: 0.8; 
+    z-index: 999;
+    position: absolute;
+    /* traansition for menu dropping down */
+    transition: top 1s ease, visibility 0s linear 1s, opacity 1s ease;
+}
+
+#hamburger-nav.visible {
+    top: 0;
+    visibility: visible; 
+    opacity: 1; 
+    transition: top 1s ease, visibility 0s, opacity 1s ease;
+}
+
+#hamburger-links {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.hamburger-link {
+    text-decoration: none;
+    font-size: 3rem;
+    color: #000;
+}
+
+.button__login, .button__logout{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.navlink:hover, .logo-link:hover, .hamburger-link:hover{
+    color: #00E676;
+}
 
 /* Media qurey section */
 
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-    .container {
+@media screen and (min-width: 1024px) and (max-width: 1900px) {
+    .nav-container {
         margin: 0;
     }
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width:1024px) {
     .navTrigger {
         display: block;
     }
-    .nav div.logo {
+    .logo {
         margin-left: 15px;
     }
-    .nav div.main_list {
-        width: 100%;
-        height: 0;
-        overflow: hidden;
-    }
-    .nav div.show_list {
-        height: auto;
+    #mainListDiv, .navlink{
         display: none;
     }
-    .nav div.main_list ul {
-        flex-direction: column;
-        width: 100%;
-        height: 100vh;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        background-color: #111;
-        /*same background color of navbar*/
-        background-position: center top;
-    }
-    .nav div.main_list ul li {
-        width: 100%;
-        text-align: right;
-    }
-    .nav div.main_list ul li a {
-        text-align: center;
-        width: 100%;
-        font-size: 3rem;
-        padding: 20px;
-    }
-    .nav div.media_button {
-        display: block;
-    }
 }
-
-button{
-    background-color: transparent;
-    border: 0;
-    cursor: pointer;
-    font-size: 2.4rem;
-    text-decoration: none;
-    font-family: "Quicksand", sans-serif;
-    padding-right: 3rem;
-}
-
-button:hover {
-    color: #00E676;
-  }
-
 
 /* Animation */
 /* Inspiration taken from Dicson https://codemyui.com/simple-hamburger-menu-x-mark-animation/ */
 
-.navTrigger {
-    cursor: pointer;
-    width: 30px;
-    height: 25px;
-    margin: auto;
-    position: absolute;
-    right: 30px;
-    top: 0;
-    bottom: 0;
-}
-
 .navTrigger i {
-    background-color: #fff;
+    background-color: #000000;
     border-radius: 2px;
     content: '';
     display: block;
@@ -349,30 +333,4 @@ button:hover {
     100% {
         transform: translateY(-9px) rotate(135deg);
     }
-}
-
-.affix {
-    padding: 0;
-    background-color: #111;
-}
-
-
-
-
-
-
-.myH2 {
-	text-align:center;
-	font-size: 4rem;
-}
-.myP {
-	text-align: justify;
-	padding-left:15%;
-	padding-right:15%;
-	font-size: 20px;
-}
-@media all and (max-width:700px){
-	.myP {
-		padding:2%;
-	}
 }
