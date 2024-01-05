@@ -17,7 +17,9 @@ function receiveGeoJson(geojson: String){
 
 function connectWebSocket(addr: String) {
     // WebSocket connection
-    socket = new WebSocket(`ws://${addr}`);
+    const wsUrl = `ws://${addr.replace('http://', '').replace('https://', '')}`;
+    socket = new WebSocket(wsUrl);
+    //socket = new WebSocket(`ws://${addr}`);
 
     // Connection opened
     socket.addEventListener('open', () => {
@@ -51,6 +53,19 @@ export default function Stage() {
     const [images, setImages] = useState<String[]>([])
 
     useEffect(() => {
+        // Corrected fetch request without body for GET method
+        const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images?username=Edward`; // Example of passing parameters in URL
+        fetch(imagesEndpoint)
+            .then((response) => response.json()) // Assuming the response needs to be converted from JSON
+            .then((imagesData) => {
+                setImages(imagesData);
+            })
+            .catch((error) => {
+                console.error('Error fetching images:', error);
+            });
+    }, []);
+
+    /* useEffect(() => {
         const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
         fetch(imagesEndpoint, {
             method: 'GET',
@@ -60,7 +75,7 @@ export default function Stage() {
         }).then((r: any) => {
             setImages(r)
         })
-    }, [])
+    }, []) */
 
     // state needs to be raised here because the parent needs access to selected
     // varius dropdown selections
@@ -75,7 +90,7 @@ export default function Stage() {
     // xlist
     const [XItems, setXItems] = useState<any[]>(['aaa', 'bbb'])
 
-    useEffect(() => {
+    /* useEffect(() => {
         const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
         fetch(classificationsEndpoint, {
             method: 'GET',
@@ -85,7 +100,20 @@ export default function Stage() {
         }).then((r: any) => {
             setXItems(r)
         })
-    }, [])
+    }, []) */
+
+    useEffect(() => {
+        // Corrected fetch request without body for GET method
+        const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications?username=Edward`; // Example of passing parameters in URL
+        fetch(classificationsEndpoint)
+            .then((response) => response.json()) // Assuming the response needs to be converted from JSON
+            .then((classificationsData) => {
+                setXItems(classificationsData);
+            })
+            .catch((error) => {
+                console.error('Error fetching classifications:', error);
+            });
+    }, []);
 
     const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target;

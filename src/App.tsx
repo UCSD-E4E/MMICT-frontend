@@ -6,6 +6,7 @@ import {createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { AuthenticationGuard } from "./components/auth-guard";
 import Home from "./pages/HomePage";
 import Visualization from "./pages/Visualization";
 import Profile from "./pages/Profile";
@@ -17,28 +18,28 @@ import { useEffect, useState } from 'react';
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/AboutUs" ,
+    path: "/aboutUs" ,
     element: <AboutUs />
   }, 
   {
-    path: "/Visualization" ,
-    element: <Visualization />
+    path: "/visualization" ,
+    element: <AuthenticationGuard component={Visualization} />
   },
   {
-    path: "/Profile" ,
-    element: <Profile />
+    path: "/profile" ,
+    element: <AuthenticationGuard component={Profile} />
   },
   {
-    path: "/Services",
+    path: "/services",
     element: <Services />,
   },
   {
-    path: "/PageLoader",
+    path: "/pageLoader",
     element: <PageLoader />,
+  },
+  {
+    path: "/",
+    element: <Home />,
   }
 ])
 export default function App() {

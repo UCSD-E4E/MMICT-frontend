@@ -14,6 +14,16 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
+## Environment Variables
+
+Stored in .env and .env.production for the server to use without being exposed to users.
+You will need:
+- REACT_APP_AUTH0_AUDIENCE: Auth0 API audience 
+- REACT_APP_AUTH0_DOMAIN: Auth0 regular application domain
+- REACT_APP_AUTH0_CLIENT_ID: Auth0 user (your account) userID
+- REACT_APP_API_SERVER_URL: Server URL to the central webserver
+- PORT: Optional since docker can specify port, but should be 8080
+
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
@@ -68,3 +78,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## If you are getting 404 errors on docker container:
+add 
+location / {
+    root   /usr/share/nginx/html;
+    index  index.html index.htm;
+    try_files $uri $uri/ /index.html;
+}
+to /etc/nginx/conf.d/default.conf
