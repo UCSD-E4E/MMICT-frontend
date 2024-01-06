@@ -13,11 +13,25 @@ export default function Home() {
           // Get the access token
           const token = await getAccessTokenSilently();
           console.log(token);
+          console.log("user:");
           console.log(user);
+
+          //userId is user.sub except only the parts of the string after |
+          const userId = (user.sub?.split("|")[1]) ?? '';
+
+          // Check if user already exists
+          const checkUrl = `http://localhost:8081/users/checkUser/${userId}`;
+          const checkResponse = await fetch(checkUrl);
+          const checkData = await checkResponse.json();
+          if(checkData.exists){
+            console.log("User already exists");
+            return;
+          }
 
           // Transform the Auth0 user object to match MongoDB schema
           const userForDB = {
             username: user.email, 
+            userId: userId,
             images: []
           };
 
@@ -33,6 +47,7 @@ export default function Home() {
             body: JSON.stringify(userForDB),
           });
           const responseData = await response.json();
+          console.log("User data uploaded");
           console.log(responseData);
         } catch (error) {
           console.error("Error uploading user data", error);
