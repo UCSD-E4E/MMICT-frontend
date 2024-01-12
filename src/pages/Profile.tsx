@@ -1,31 +1,19 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import React , {useEffect} from "react";
 import '../assets/css/Profile.css';
+import ApiService from "../services/ApiService";
 
 export default function Profile(){
-  const { user} = useAuth0();
+  const { user, getAccessTokenSilently} = useAuth0();
+  const apiUrl = ApiService.getApiServiceUrl();
 
   // get the user's data from the server
   useEffect(() => {
-    const getUserData = async () => {
-      if (user && user.email) {
-        try {
-          //userId is user.sub except only the parts of the string after |
-          const userId = (user.sub?.split("|")[1]) ?? '';
-          const response = await fetch(`http://localhost:8081/users/getUser/${userId}`);
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-          }
-          const userData = await response.json();
-          console.log(userData);
-          // Handle userData as required
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      }
-    };
-  
-    getUserData();
+    const getUser = async () => {
+      const token = await getAccessTokenSilently();
+      ApiService.getUser(user, token);
+    }
+    getUser();
   }, [user]);
 
   return (
