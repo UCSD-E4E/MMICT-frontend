@@ -1,21 +1,10 @@
-import {useState} from 'react';
+import React from 'react';
 import LeafletMap from '../components/LeafletMap';
 import '../assets/css/visualization.css';
 import Stage from "../components/Stage";
 import ProgressBar from "@ramonak/react-progress-bar";
 
 export default function Visualization() {
-  const [stageStyle, setStageStyle] = useState({});
-  const [mapStyle, setMapStyle] = useState({});
-  const handleOptionsChange = (showOptions: boolean) => {
-    if(showOptions){
-      setStageStyle({width: "100px", margin: "0px", padding: "0px"})
-      setMapStyle({width:"120%"})
-    } else {
-      setStageStyle({})
-      setMapStyle({})
-    }
-  }
   return (
     <div id='container'>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -29,10 +18,10 @@ export default function Visualization() {
         animateOnRender={true}
       />
       <div id='classification'>
-        <div id='left-menu' style={stageStyle}>
-          <Stage onShowOptionsChange={handleOptionsChange}/>
+        <div id='left-menu'>
+          <Stage/>
         </div>
-        <div id='right-menu' style={mapStyle}>
+        <div id='right-menu'>
           <LeafletMap />
         </div>
       </div>
