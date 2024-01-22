@@ -8,12 +8,23 @@ import {
   } from 'react-leaflet';
   import { GeoJsonObject } from 'geojson'
   import mapData from "./Classify.json"
-  import React from 'react';
+  import {useRef} from 'react';
 const center = [40.63463151377654, -97.89969605983609];
 const { BaseLayer } = LayersControl;
 export default function LeafletMap() {
+    const elementRef = useRef<HTMLDivElement>(null);
+
+    const goFullScreen = () => {
+      const element = elementRef.current;
+      console.log('Full Screen')
+      if(element){
+        if(element.requestFullscreen){
+          element.requestFullscreen();
+        }
+      }
+    }
     return (
-      <div style={{ width: '100%', height: '85vh'}}>
+      <div style={{ width: '100%', height: '85vh'}} ref={elementRef}>
           <MapContainer
             center={[18.173094, -77.318759]}
             zoom={10}
@@ -54,6 +65,7 @@ export default function LeafletMap() {
             </Marker> */}
           </MapContainer>
           <button style={{marginLeft:"2%", fontSize:"1.5vw"}}>Download</button>
+          <button style={{fontSize:"1.5vw"}} onClick={goFullScreen}>Full Screen</button>
         </div>
     )
 }

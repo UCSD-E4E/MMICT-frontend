@@ -4,10 +4,6 @@ import Dropdown from "./Dropdown";
 import XItemList from './XitemList';
 import ApiService from '../services/ApiService';
 
-interface StageProps {
-    onShowOptionsChange: (showOptions: boolean) => void;
-}
-
 let socket:WebSocket;
 
 // Callback for status updates
@@ -46,14 +42,13 @@ function connectWebSocket(addr: String) {
     });
   }
 
-export default function Stage({onShowOptionsChange}: StageProps) {
+export default function Stage() {
     connectWebSocket(ApiService.getApiServiceUrl());
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
     const modelTypes = ['XGBoost', 'Random Forest', 'Neural Network']
     const [images, setImages] = useState<String[]>([])
-    const [showOptions, setShowOptions] = useState(true)
 
     useEffect(() => {
         const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
@@ -157,25 +152,12 @@ export default function Stage({onShowOptionsChange}: StageProps) {
             break;
     }
     
-    if(showOptions){
-        return (
-            <div className='stage'>
-                <h1>Current Service: {option}</h1>
-                <Dropdown options={options} selected={option} setSelected={setOption}/>
-                {stage}
-                <button onClick={() => {
-                    setShowOptions(false)
-                    onShowOptionsChange(showOptions)
-                }}>Hide Options</button>
-            </div>
-      )
-    } else {
-        return (
-            <button style={{fontSize: "1.5vw"}} onClick={() => {
-                setShowOptions(true)
-                onShowOptionsChange(showOptions)
-            }}>Show Options</button>
-        )
-    }
+    return(
+        <div className='stage'>
+            <h1>Current Service: {option}</h1>
+            <Dropdown options={options} selected={option} setSelected={setOption}/>
+            {stage}
+        </div>
+    )
     
 }
