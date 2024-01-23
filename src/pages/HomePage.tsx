@@ -9,8 +9,10 @@ export default function Home() {
 
   useEffect(() => {
     const uploadUser = async () => {
-      const token = await getAccessTokenSilently();
-      ApiService.uploadUser(user, isAuthenticated, token);
+      if(isAuthenticated && user) {
+        const token = await getAccessTokenSilently();
+        ApiService.uploadUser(user, isAuthenticated, token);
+      }
     }
     uploadUser();
   }, [user, isAuthenticated, getAccessTokenSilently]);

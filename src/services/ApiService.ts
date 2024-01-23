@@ -7,44 +7,42 @@ export default class ApiService {
     }
 
     static async uploadUser(user: any, isAuthenticated: boolean, token: String) {
-        if (isAuthenticated && user) {
-          try {
+        try {
             const apiUrl = ApiService.getApiServiceUrl();
             //userId is user.sub except only the parts of the string after |
             const userId = (user.sub?.split("|")[1]) ?? '';
-  
+
             // Check if user already exists in database
             const checkUrl = `${apiUrl}/users/checkUser/${userId}`;
             const checkResponse = await fetch(checkUrl);
             const checkData = await checkResponse.json();
             if(checkData.exists){
-              console.log("User already exists");
-              return;
+                console.log("User already exists");
+                return;
             }
-  
+
             // Transform the Auth0 user object to match MongoDB schema
             const userForDB = {
-              username: user.email, 
-              userId: userId,
-              images: []
+                username: user.email, 
+                userId: userId,
+                images: []
             };
-  
+
             // Make the POST request to server and console.log the response
             const uploadUrl = `${apiUrl}/users/upload`;
             const response = await fetch(uploadUrl, {
-              method: 'POST',
-              headers: {
+                method: 'POST',
+                headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify(userForDB),
+                },
+                body: JSON.stringify(userForDB),
             });
             const responseData = await response.json();
             console.log("User data uploaded");
             console.log(responseData);
-          } catch (error) {
+            } catch (error) {
             console.error("Error uploading user data", error);
-          }
         }
     };
 
