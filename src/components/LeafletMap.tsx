@@ -8,7 +8,7 @@ import {
   } from 'react-leaflet';
   import { GeoJsonObject } from 'geojson'
   import mapData from "./Classify.json"
-  import mapData2 from "./TestClassify.json"
+  import mapData2 from "./labels.json"
   import {useState, useRef} from 'react';
   import Toggle from './Toggle';
 const center = [40.63463151377654, -97.89969605983609];
@@ -29,7 +29,7 @@ export default function LeafletMap() {
 
     const [showGeojsons, setShowGeojsons] = useState<Boolean[]>([false, false])
 
-    const showMapStyle = {opacity: 1, fillOpacity: 0.2}
+    const showMapStyle = [{color:"blue", opacity: 1, fillOpacity: 0.2}, {color:"green", opacity: 1, fillOpacity: 0.2}]
     const hideMapStyle = {opacity: 0, fillOpacity: 0}
 
     return (
@@ -38,8 +38,8 @@ export default function LeafletMap() {
       <div style={{ width: '100%', height: '68vh'}} ref={elementRef}>
           
           <MapContainer
-            center={[18.173094, -77.318759]}
-            zoom={10}
+            center={[17.792094, -77.188759]}
+            zoom={13}
             style={{ width: '96%', height: '100%', marginLeft: '2%', marginRight: '2%'}}
             className="map"
           >
@@ -48,7 +48,7 @@ export default function LeafletMap() {
                 type: "FeatureCollection",
                 features: mapData.features
               } as GeoJsonObject}
-              style={showGeojsons[0] ? showMapStyle : hideMapStyle}
+              style={showGeojsons[0] ? showMapStyle[0] : hideMapStyle}
             />
 
             <GeoJSON
@@ -56,7 +56,7 @@ export default function LeafletMap() {
                 type: "FeatureCollection",
                 features: mapData2.features
               } as GeoJsonObject}
-              style={showGeojsons[1] ? showMapStyle : hideMapStyle}
+              style={showGeojsons[1] ? showMapStyle[1] : hideMapStyle}
             />
             <LayersControl>
             <BaseLayer checked name="OpenStreetMap">
