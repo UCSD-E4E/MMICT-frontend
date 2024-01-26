@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import "../assets/css/toggle.css";
 
 interface ToggleProps {
@@ -13,8 +13,8 @@ interface Checkbox {
 
 export default function Toggle(props: ToggleProps){
     const initialOptions = [
-        {label: 'show GeoJSON 1 (Jamaica)', isChecked: false},
-        {label: 'show GeoJSON 2 (Jamaica)', isChecked: false},
+        {label: 'GeoJSON 1 (Jamaica)', isChecked: false},
+        {label: 'GeoJSON 2 (Jamaica)', isChecked: false},
     ]
     const [options, setOptions] = useState<Checkbox[]>(initialOptions)
 
