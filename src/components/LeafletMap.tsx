@@ -8,9 +8,12 @@ import {
   } from 'react-leaflet';
   import { GeoJsonObject } from 'geojson'
   import mapData from "./Classify.json"
-  import {useRef} from 'react';
+  import mapData2 from "./TestClassify.json"
+  import {useState, useRef} from 'react';
+  import Toggle from './Toggle';
 const center = [40.63463151377654, -97.89969605983609];
 const { BaseLayer } = LayersControl;
+
 export default function LeafletMap() {
     const elementRef = useRef<HTMLDivElement>(null);
 
@@ -23,8 +26,17 @@ export default function LeafletMap() {
         }
       }
     }
+
+    const [showGeojsons, setShowGeojsons] = useState<Boolean[]>([false, false])
+
+    const showMapStyle = {opacity: 1, fillOpacity: 0.2}
+    const hideMapStyle = {opacity: 0, fillOpacity: 0}
+
     return (
-      <div style={{ width: '100%', height: '85vh'}} ref={elementRef}>
+      <div>
+        <Toggle showGeojsons={showGeojsons} setShowGeojsons={setShowGeojsons}/>
+      <div style={{ width: '100%', height: '68vh'}} ref={elementRef}>
+          
           <MapContainer
             center={[18.173094, -77.318759]}
             zoom={10}
@@ -35,7 +47,16 @@ export default function LeafletMap() {
               data={{
                 type: "FeatureCollection",
                 features: mapData.features
-              } as GeoJsonObject }
+              } as GeoJsonObject}
+              style={showGeojsons[0] ? showMapStyle : hideMapStyle}
+            />
+
+            <GeoJSON
+              data={{
+                type: "FeatureCollection",
+                features: mapData2.features
+              } as GeoJsonObject}
+              style={showGeojsons[1] ? showMapStyle : hideMapStyle}
             />
             <LayersControl>
             <BaseLayer checked name="OpenStreetMap">
@@ -66,6 +87,7 @@ export default function LeafletMap() {
           </MapContainer>
           <button style={{marginLeft:"2%", fontSize:"1.5vw"}}>Download</button>
           <button style={{fontSize:"1.5vw"}} onClick={goFullScreen}>Full Screen</button>
+        </div>
         </div>
     )
 }
