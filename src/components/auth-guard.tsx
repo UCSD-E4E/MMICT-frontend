@@ -6,6 +6,7 @@ interface AuthenticationGuardProps {
     component: React.ComponentType<any>;
 }
 
+//This handles functionality so that certain pages can only be accessed if the user is logged in
 export const AuthenticationGuard: React.FC<AuthenticationGuardProps> = ({ component }) => {
     const Component = withAuthenticationRequired(component, {
         onRedirecting: () => (

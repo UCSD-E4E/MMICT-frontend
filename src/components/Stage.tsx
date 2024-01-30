@@ -3,6 +3,7 @@ import "../assets/css/stage.css"
 import Dropdown from "./Dropdown";
 import XItemList from './XitemList';
 import ApiService from '../services/ApiService';
+import { useAuth0 } from "@auth0/auth0-react";
 
 let socket:WebSocket;
 
@@ -46,6 +47,8 @@ function connectWebSocket(addr: String) {
 
 export default function Stage() {
     connectWebSocket(ApiService.getApiServiceUrl());
+    const [userId, setUserId] = useState<String>('');
+    const { user} = useAuth0();
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
@@ -65,6 +68,12 @@ export default function Stage() {
             });
     }, []);
 
+    //useEffect which uses setUserId to set the userId state variable
+    useEffect(() => {
+        if(user) {
+            setUserId(user.sub?.split("|")[1] || "");
+        }
+    }, []);
     /* useEffect(() => {
         const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
         fetch(imagesEndpoint, {
@@ -123,15 +132,14 @@ export default function Stage() {
 
     // function callback for upload button click
     const handleUpload = () => {
+        let formData = new FormData();
         if (!selectedFile) {
             alert('No file selected!')
         }
 
         console.log('Uploading file: ' + selectedFile?.name);
-
-        let formData = new FormData();
+        formData.append("userid", userId.toString());
         formData.append("image", selectedFile as File);
-
         // development endpoint
         const uploadEndpoint = `${ApiService.getApiServiceUrl()}/upload/`
         fetch(uploadEndpoint, {
