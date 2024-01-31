@@ -14,6 +14,11 @@ import {
 const center = [40.63463151377654, -97.89969605983609];
 const { BaseLayer } = LayersControl;
 
+interface GeojsonStyle {
+  show: boolean,
+  color: string,
+}
+
 export default function LeafletMap() {
     const elementRef = useRef<HTMLDivElement>(null);
 
@@ -27,14 +32,24 @@ export default function LeafletMap() {
       }
     }
 
-    const [showGeojsons, setShowGeojsons] = useState<Boolean[]>([false, false])
+    const initialGeojsonStyles = [{
+      show: false,
+      color: "blue",
+    }, {
+      show: false,
+      color: "green"
+    }]
 
-    const showMapStyle = [{color:"blue", opacity: 1, fillOpacity: 0.2}, {color:"green", opacity: 1, fillOpacity: 0.2}]
-    const hideMapStyle = {opacity: 0, fillOpacity: 0}
+    const showStyle = {opacity: 1, fillOpacity: 0.2}
+    const hideStyle = {opacity: 0, fillOpacity: 0}
+
+    const [geojsonStyles, setGeojsonStyles] = useState<GeojsonStyle[]>(initialGeojsonStyles)
+
+    console.log(geojsonStyles)
 
     return (
       <div>
-        <Toggle showGeojsons={showGeojsons} setShowGeojsons={setShowGeojsons}/>
+        <Toggle geojsonStyles={geojsonStyles} setGeojsonStyles={setGeojsonStyles}/>
       <div style={{ width: '100%', height: '68vh'}} ref={elementRef}>
           
           <MapContainer
@@ -48,7 +63,7 @@ export default function LeafletMap() {
                 type: "FeatureCollection",
                 features: mapData.features
               } as GeoJsonObject}
-              style={showGeojsons[0] ? showMapStyle[0] : hideMapStyle}
+              style={geojsonStyles[0].show ? {...showStyle, color: geojsonStyles[0].color} : hideStyle}
             />
 
             <GeoJSON
@@ -56,7 +71,7 @@ export default function LeafletMap() {
                 type: "FeatureCollection",
                 features: mapData2.features
               } as GeoJsonObject}
-              style={showGeojsons[1] ? showMapStyle[1] : hideMapStyle}
+              style={geojsonStyles[1].show ? {...showStyle, color: geojsonStyles[1].color} : hideStyle}
             />
             <LayersControl>
             <BaseLayer checked name="OpenStreetMap">
