@@ -26,7 +26,11 @@ export const MenuBar: React.FC<MenuBarProps> = ({ isHomeRoute }: MenuBarProps) =
                 <a className="navlink" href="/AboutUs">About Us</a>
                 <a className="navlink" href="/Visualization">Visualization</a>
                 <a className="navlink" href="/Services">Services</a>
-                <a className="navlink" href="/Profile">Profile</a>
+                {isAuthenticated && (
+                    <>
+                        <a className="navlink" href="/Profile">Profile</a>
+                    </>
+                )}
                 {!isAuthenticated && (
                     <>
                         <LoginButton buttonClass="navlink"/>

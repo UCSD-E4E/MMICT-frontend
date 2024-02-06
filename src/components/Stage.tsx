@@ -3,6 +3,7 @@ import "../assets/css/stage.css"
 import Dropdown from "./Dropdown";
 import XItemList from './XitemList';
 import ApiService from '../services/ApiService';
+import { useAuth0 } from "@auth0/auth0-react";
 
 let socket:WebSocket;
 
@@ -17,7 +18,9 @@ function receiveGeoJson(geojson: String){
 
 function connectWebSocket(addr: String) {
     // WebSocket connection
-    socket = new WebSocket(`ws://${addr}`);
+    const wsUrl = `ws://${addr.replace('http://', '').replace('https://', '')}`;
+    socket = new WebSocket(wsUrl);
+    //socket = new WebSocket(`ws://${addr}`);
 
     // Connection opened
     socket.addEventListener('open', () => {
@@ -44,6 +47,8 @@ function connectWebSocket(addr: String) {
 
 export default function Stage() {
     connectWebSocket(ApiService.getApiServiceUrl());
+    const [userId, setUserId] = useState<String>('');
+    const { user} = useAuth0();
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
@@ -51,6 +56,25 @@ export default function Stage() {
     const [images, setImages] = useState<String[]>([])
 
     useEffect(() => {
+        // Corrected fetch request without body for GET method
+        const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images?username=Edward`; // Example of passing parameters in URL
+        fetch(imagesEndpoint)
+            .then((response) => response.json()) // Assuming the response needs to be converted from JSON
+            .then((imagesData) => {
+                setImages(imagesData);
+            })
+            .catch((error) => {
+                console.error('Error fetching images:', error);
+            });
+    }, []);
+
+    //useEffect which uses setUserId to set the userId state variable
+    useEffect(() => {
+        if(user) {
+            setUserId(user.sub?.split("|")[1] || "");
+        }
+    }, []);
+    /* useEffect(() => {
         const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
         fetch(imagesEndpoint, {
             method: 'GET',
@@ -60,7 +84,7 @@ export default function Stage() {
         }).then((r: any) => {
             setImages(r)
         })
-    }, [])
+    }, []) */
 
     // state needs to be raised here because the parent needs access to selected
     // varius dropdown selections
@@ -75,7 +99,7 @@ export default function Stage() {
     // xlist
     const [XItems, setXItems] = useState<any[]>(['aaa', 'bbb'])
 
-    useEffect(() => {
+    /* useEffect(() => {
         const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
         fetch(classificationsEndpoint, {
             method: 'GET',
@@ -85,7 +109,20 @@ export default function Stage() {
         }).then((r: any) => {
             setXItems(r)
         })
-    }, [])
+    }, []) */
+
+    useEffect(() => {
+        // Corrected fetch request without body for GET method
+        const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications?username=Edward`; // Example of passing parameters in URL
+        fetch(classificationsEndpoint)
+            .then((response) => response.json()) // Assuming the response needs to be converted from JSON
+            .then((classificationsData) => {
+                setXItems(classificationsData);
+            })
+            .catch((error) => {
+                console.error('Error fetching classifications:', error);
+            });
+    }, []);
 
     const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target;
@@ -95,15 +132,14 @@ export default function Stage() {
 
     // function callback for upload button click
     const handleUpload = () => {
+        let formData = new FormData();
         if (!selectedFile) {
             alert('No file selected!')
         }
 
         console.log('Uploading file: ' + selectedFile?.name);
-
-        let formData = new FormData();
+        formData.append("userid", userId.toString());
         formData.append("image", selectedFile as File);
-
         // development endpoint
         const uploadEndpoint = `${ApiService.getApiServiceUrl()}/upload/`
         fetch(uploadEndpoint, {
