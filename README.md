@@ -24,17 +24,6 @@ You will need:
 - REACT_APP_API_SERVER_URL: Server URL to the central webserver
 - PORT: Optional since docker can specify port, but should be 8080
 
-## Errors
-If you get a 404 Not Found nginx/1.25.3 when navigating to pages other than home, then on the local frontend docker container edit deafult.conf at /etc/nginx/conf.d/default.conf.
-Then, add the line `try_files $uri $uri/ /index.html;` under location. It should look like this:
-```
-location / {
-    root   /usr/share/nginx/html;
-    index  index.html index.htm;
-    try_files $uri $uri/ /index.html;
-}
-```
-
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
@@ -90,11 +79,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-## If you are getting 404 errors on docker container:
-add 
-location / {
-    root   /usr/share/nginx/html;
-    index  index.html index.htm;
-    try_files $uri $uri/ /index.html;
-}
-to /etc/nginx/conf.d/default.conf
