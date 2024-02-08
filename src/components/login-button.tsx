@@ -12,7 +12,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ buttonClass }) => {
   const handleLogin = async () => {
     await loginWithRedirect({
       appState: {
-        returnTo: "/profile",
+        returnTo: "/",
       },
       authorizationParams: {
         prompt: "login",
