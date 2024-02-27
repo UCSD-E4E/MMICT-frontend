@@ -3,6 +3,7 @@ import "../assets/css/stage.css"
 import Dropdown from "./Dropdown";
 import XItemList from './XitemList';
 import ApiService from '../services/ApiService';
+import { useAuth0 } from "@auth0/auth0-react";
 
 let socket:WebSocket;
 
@@ -44,6 +45,8 @@ function connectWebSocket(addr: String) {
 
 export default function Stage() {
     connectWebSocket(ApiService.getApiServiceUrl());
+    const [userId, setUserId] = useState<String>('');
+    const { user} = useAuth0();
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
@@ -61,6 +64,14 @@ export default function Stage() {
             setImages(r)
         })
     }, [])
+
+    //useEffect which uses setUserId to set the userId state variable
+    // this is used in uploading the file
+    useEffect(() => {
+        if(user) {
+            setUserId(user.sub?.split("|")[1] || "");
+        }
+    }, []);
 
     // state needs to be raised here because the parent needs access to selected
     // varius dropdown selections
@@ -103,6 +114,7 @@ export default function Stage() {
 
         let formData = new FormData();
         formData.append("image", selectedFile as File);
+        formData.append("userid", userId.toString());
 
         // development endpoint
         const uploadEndpoint = `${ApiService.getApiServiceUrl()}/upload/`

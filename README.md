@@ -39,6 +39,16 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
+## Environment Variables
+
+Stored in .env and .env.production for the server to use without being exposed to users.
+You will need:
+- REACT_APP_AUTH0_AUDIENCE: Auth0 API audience/identifier
+- REACT_APP_AUTH0_DOMAIN: Auth0 regular application domain
+- REACT_APP_AUTH0_CLIENT_ID: Auth0 regular application userID
+- REACT_APP_API_SERVER_URL: Server URL to the central webserver
+- PORT: Optional since docker can specify port, but should be 8080
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
