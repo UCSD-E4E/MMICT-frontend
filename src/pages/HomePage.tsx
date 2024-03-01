@@ -11,10 +11,24 @@ export default function Home() {
     const uploadUser = async () => {
       if(isAuthenticated && user) {
         const token = await getAccessTokenSilently();
-        ApiService.uploadUser(user, isAuthenticated, token);
+        ApiService.uploadUser(user, token);
       }
     }
+    const getImages = async () => {
+      if(isAuthenticated && user) {
+        const token = await getAccessTokenSilently();
+        ApiService.getImages(user, token);
+      }
+    }
+    const getClassifications = async () => {
+      if(isAuthenticated && user) {
+        const token = await getAccessTokenSilently();
+        ApiService.getClassifications(user, token);
+      }
+    }
+    getImages();
     uploadUser();
+    getClassifications();
   }, [user, isAuthenticated, getAccessTokenSilently]);
 
   return (

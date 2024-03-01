@@ -6,7 +6,7 @@ export default class ApiService {
         return process.env.REACT_APP_API_SERVER_URL;
     }
 
-    static async uploadUser(user: any, isAuthenticated: boolean, token: String) {
+    static async uploadUser(user: any, token: String) {
         try {
             const apiUrl = ApiService.getApiServiceUrl();
             //userId is user.sub except only the parts of the string after |
@@ -63,6 +63,56 @@ export default class ApiService {
                 }
                 const userData = await response.json();
                 console.log(userData);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+          }
+    };
+
+    // get all images of a user
+    static async getImages(user: any, token: String) {
+        if (user && user.email) {
+            try {
+                const apiUrl = ApiService.getApiServiceUrl();
+                //userId is user.sub except only the parts of the string after |
+                const userId = (user.sub?.split("|")[1]) ?? '';
+                const response = await fetch(`${apiUrl}/users/getImages/${userId}`, {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${token}`,
+                    },
+                  });
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+                const images = await response.json();
+                console.log("Images:");
+                console.log(images);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+          }
+    };
+
+    // get all classifications of a user
+    static async getClassifications(user: any, token: String) {
+        if (user && user.email) {
+            try {
+                const apiUrl = ApiService.getApiServiceUrl();
+                //userId is user.sub except only the parts of the string after |
+                const userId = (user.sub?.split("|")[1]) ?? '';
+                const response = await fetch(`${apiUrl}/users/getClassifications/${userId}`, {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${token}`,
+                    },
+                  });
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+                const classifications = await response.json();
+                console.log("Classifications:");
+                console.log(classifications);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }

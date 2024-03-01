@@ -5,7 +5,6 @@ import ApiService from "../services/ApiService";
 
 export default function Profile(){
   const { user, getAccessTokenSilently} = useAuth0();
-  const apiUrl = ApiService.getApiServiceUrl();
 
   // get the user's data from the server
   useEffect(() => {
