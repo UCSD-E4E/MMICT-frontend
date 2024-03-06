@@ -4,8 +4,7 @@ import {
     LayersControl,
     useMap,
     Polygon, 
-    GeoJSON,
-    Popup,
+    GeoJSON
   } from 'react-leaflet';
   import { FullscreenControl } from 'react-leaflet-fullscreen';
   import "react-leaflet-fullscreen/styles.css"
