@@ -15,6 +15,7 @@ import {
   import mapData2 from "./labels.json"
   import {useState, useRef} from 'react';
   import Toggle from './Toggle';
+  import '../assets/css/map.css'
 const center = [40.63463151377654, -97.89969605983609];
 const { BaseLayer } = LayersControl;
 
@@ -49,12 +50,6 @@ export default function LeafletMap() {
           <MapContainer
             center={[17.792094, -77.188759]}
             zoom={13}
-            style={{ width: '96%',
-                    height: '100%',
-                    marginLeft: '2%',
-                    marginRight: '2%',
-                    borderRadius: '20px',
-                    boxShadow: '4px 7px 18px 0px rgba(0,0,0,0.5)'}}
             className="map"
           >
             <GeoJSON
@@ -94,14 +89,7 @@ export default function LeafletMap() {
           </LayersControl>
           <FullscreenControl/>
           <Control prepend={false} position='bottomleft'>
-              <button style={{backgroundSize: '26px 26px',
-                              backgroundColor: 'white',
-                              paddingTop: '6px',
-                              paddingLeft: '7.5px',
-                              paddingRight: '7.5px',
-                              border: '2px solid rgba(0,0,0,0.25)',
-                              borderRadius: '4px',
-                              }}>
+              <button className='download-icon'>
                 <DownloadIcon />
               </button>
           </Control>
