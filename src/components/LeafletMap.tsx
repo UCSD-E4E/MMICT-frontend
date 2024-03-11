@@ -4,13 +4,18 @@ import {
     LayersControl,
     useMap,
     Polygon, 
-    GeoJSON,
+    GeoJSON
   } from 'react-leaflet';
+  import { FullscreenControl } from 'react-leaflet-fullscreen';
+  import "react-leaflet-fullscreen/styles.css"
+  import Control from 'react-leaflet-custom-control'
+  import {Download as DownloadIcon} from '@mui/icons-material'
   import { GeoJsonObject } from 'geojson'
   import mapData from "./Classify.json"
   import mapData2 from "./labels.json"
   import {useState, useRef} from 'react';
   import Toggle from './Toggle';
+  import '../assets/css/map.css'
 const center = [40.63463151377654, -97.89969605983609];
 const { BaseLayer } = LayersControl;
 
@@ -21,16 +26,6 @@ interface GeojsonStyle {
 
 export default function LeafletMap() {
     const elementRef = useRef<HTMLDivElement>(null);
-
-    const goFullScreen = () => {
-      const element = elementRef.current;
-      console.log('Full Screen')
-      if(element){
-        if(element.requestFullscreen){
-          element.requestFullscreen();
-        }
-      }
-    }
 
     const initialGeojsonStyles = [{
       show: false,
@@ -55,7 +50,6 @@ export default function LeafletMap() {
           <MapContainer
             center={[17.792094, -77.188759]}
             zoom={13}
-            style={{ width: '96%', height: '100%', marginLeft: '2%', marginRight: '2%'}}
             className="map"
           >
             <GeoJSON
@@ -93,15 +87,13 @@ export default function LeafletMap() {
             />
             </BaseLayer>
           </LayersControl>
-            {/*
-            <Marker position={[51.505, -0.09]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker> */}
+          <FullscreenControl/>
+          <Control prepend={false} position='bottomleft'>
+              <button className='download-icon'>
+                <DownloadIcon />
+              </button>
+          </Control>
           </MapContainer>
-          <button style={{marginLeft:"2%", fontSize:"1.5vw"}}>Download</button>
-          <button style={{fontSize:"1.5vw"}} onClick={goFullScreen}>Full Screen</button>
         </div>
         </div>
     )
