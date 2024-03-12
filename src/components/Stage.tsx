@@ -65,6 +65,21 @@ export default function Stage() {
         })
     }, [])
 
+    // xlist
+    const [XItems, setXItems] = useState<any[]>(['aaa', 'bbb'])
+
+    useEffect(() => {
+        const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
+        fetch(classificationsEndpoint, {
+            method: 'GET',
+            body: JSON.stringify({
+                username: 'Edward'
+            })
+        }).then((r: any) => {
+            setXItems(r)
+        })
+    }, [])
+
     //useEffect which uses setUserId to set the userId state variable
     // this is used in uploading the file
     useEffect(() => {
@@ -82,21 +97,6 @@ export default function Stage() {
 
     // file selection
     const [selectedFile, setSelectedFile] = useState<File>()
-
-    // xlist
-    const [XItems, setXItems] = useState<any[]>(['aaa', 'bbb'])
-
-    useEffect(() => {
-        const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
-        fetch(classificationsEndpoint, {
-            method: 'GET',
-            body: JSON.stringify({
-                username: 'Edward'
-            })
-        }).then((r: any) => {
-            setXItems(r)
-        })
-    }, [])
 
     const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target;

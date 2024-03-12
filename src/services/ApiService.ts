@@ -1,4 +1,6 @@
 export default class ApiService {
+    // TODO: What if users don't login with google?
+
     static getApiServiceUrl(): string {
         if (typeof process.env.REACT_APP_API_SERVER_URL === 'undefined') {
             throw "API URL undefined"
@@ -118,4 +120,31 @@ export default class ApiService {
             }
           }
     };
+
+    // upload classification to user
+    static async uploadClassification(user: any, token: string, classification: JSON){
+        if (user && user.email) {
+            try {
+                const apiUrl = ApiService.getApiServiceUrl();
+                //userId is user.sub except only the parts of the string after |
+                const userId = (user.sub?.split("|")[1]) ?? '';
+
+                // Make the POST request to server and console.log the response
+                const uploadUrl = `${apiUrl}/upload/classification/${userId}`;
+                const response = await fetch(uploadUrl, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(classification),
+                });
+                const responseData = await response.json();
+                console.log("Classification uploaded");
+                console.log(responseData);
+                } catch (error) {
+                console.error("Error uploading classification", error);
+          }
+        }
+    }
 }
