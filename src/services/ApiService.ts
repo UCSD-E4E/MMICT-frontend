@@ -48,6 +48,7 @@ export default class ApiService {
         }
     };
 
+    // get user data from MongoDB
     static async getUser(user: any, token: String) {
         if (user && user.email) {
             try {
@@ -115,6 +116,7 @@ export default class ApiService {
                 const classifications = await response.json();
                 console.log("Classifications:");
                 console.log(classifications);
+                return classifications;
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -141,7 +143,6 @@ export default class ApiService {
                 });
                 const responseData = await response.json();
                 console.log("Classification uploaded");
-                console.log(responseData);
                 } catch (error) {
                 console.error("Error uploading classification", error);
           }
