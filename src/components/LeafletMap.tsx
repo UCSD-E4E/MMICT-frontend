@@ -6,14 +6,18 @@ import {
     Polygon, 
     GeoJSON,
   } from 'react-leaflet';
+  import L, { FeatureGroup, geoJson, Layer, LayerEvent, LayerGroup } from 'leaflet';
   import { GeoJsonObject } from 'geojson'
-  import mapData from "./Classify.json"
-  import {useRef} from 'react';
-const center = [40.63463151377654, -97.89969605983609];
-const { BaseLayer } = LayersControl;
-export default function LeafletMap() {
-    const elementRef = useRef<HTMLDivElement>(null);
+  import {useEffect, useRef, useState} from 'react';
+  import Toggle from './Toggle';
 
+const center = [40.63463151377654, -97.89969605983609];
+
+type Props = {
+  geoJsons: string[]
+}
+export default function LeafletMap({geoJsons}: Props) {
+    const elementRef = useRef<HTMLDivElement>(null);
     const goFullScreen = () => {
       const element = elementRef.current;
       console.log('Full Screen')
@@ -23,49 +27,82 @@ export default function LeafletMap() {
         }
       }
     }
+
+    const [showGeojsons, setShowGeojsons] = useState<Boolean[]>([])
+    const [geoStyles, setGeoStyles] = useState<Map<number, {color: string, opacity: number, fillOpacity: number}>>(new Map<number, {color: string, opacity: number, fillOpacity: number}>());
+    const [geoIds, setGeoIds] = useState<number[]>([]);
+    
+    const [geoJsonLayerGroup, setGeoJsonLayerGroup] = useState<L.LayerGroup>();
+
+    useEffect(() => {
+      var map = L.map('map').setView([17.792094, -77.188759], 13);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+  
+      setGeoJsonLayerGroup(new L.FeatureGroup().addTo(map));
+    }, []);
+
+    useEffect(() => {
+      initGeoJsons()
+    }, [geoJsons])
+
+    useEffect(()=>{
+      for(var i = 0; i < showGeojsons.length; i++){
+        toggleGeoJsonHide(geoIds[i], showGeojsons[i])
+      }
+    },[showGeojsons])
+
+    function initGeoJsons(){
+      geoJsons.forEach((geoString) =>{
+        var geoJson = JSON.parse(geoString)
+        addGeoJson(geoJson.features);
+      })
+    }
+    function addGeoJson(features: object){
+      let data={
+        type: "FeatureCollection",
+        features: features,
+      } as GeoJsonObject
+      
+      let geoJson = L.geoJSON(data);
+      geoJsonLayerGroup!.addLayer(geoJson);
+      let geoId = geoJsonLayerGroup!.getLayerId(geoJson);
+      setGeoIds([... (geoIds ?? []), geoId]);
+      setShowGeojsons([... (showGeojsons ?? []), true])
+      toggleGeoJsonHide(geoId, true)
+    }
+    function toggleGeoJsonHide(geoId: number, show: Boolean){
+      let currStyle = geoStyles.get(geoId);
+      if(currStyle === undefined){
+        currStyle = {
+          color: "blue",
+          opacity: 1,
+          fillOpacity: 0.2
+        }
+      }
+      else if(show){
+        currStyle.opacity = 1;
+        currStyle.fillOpacity = 0.2;
+      }
+      else{
+        currStyle.opacity = 0;
+        currStyle.fillOpacity = 0;
+      }
+      geoStyles.set(geoId, currStyle);
+      (geoJsonLayerGroup!.getLayer(geoId) as L.GeoJSON).setStyle(
+        currStyle
+      )
+    }
     return (
-      <div style={{ width: '100%', height: '85vh'}} ref={elementRef}>
-          <MapContainer
-            center={[18.173094, -77.318759]}
-            zoom={10}
-            style={{ width: '96%', height: '100%', marginLeft: '2%', marginRight: '2%'}}
-            className="map"
-          >
-            <GeoJSON
-              data={{
-                type: "FeatureCollection",
-                features: mapData.features
-              } as GeoJsonObject }
-            />
-            <LayersControl>
-            <BaseLayer checked name="OpenStreetMap">
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            </BaseLayer>
-            <BaseLayer name="Topography">
-            <TileLayer
-              attribution='Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-              url='https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
-            />
-            </BaseLayer>
-            <BaseLayer name="Background Imagery">
-            <TileLayer
-              attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-              url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-            />
-            </BaseLayer>
-          </LayersControl>
-            {/*
-            <Marker position={[51.505, -0.09]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker> */}
-          </MapContainer>
+      <div>
+        <div style={{ width: '100%', height: '68vh'}} ref={elementRef}>
+          <Toggle showGeojsons={showGeojsons} setShowGeojsons={setShowGeojsons}/>
+          <div id="map" style={{ width: '96%', height: '100%', marginLeft: '2%', marginRight: '2%'}}> </div>
           <button style={{marginLeft:"2%", fontSize:"1.5vw"}}>Download</button>
           <button style={{fontSize:"1.5vw"}} onClick={goFullScreen}>Full Screen</button>
         </div>
+      </div>
     )
 }

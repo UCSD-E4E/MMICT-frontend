@@ -6,16 +6,8 @@ import ApiService from '../services/ApiService';
 
 let socket:WebSocket;
 
-// Callback for status updates
-function wsStatusUpdate(status: String){
-    console.log("status is now:" + status)
-}
-// Callback for geojson
-function receiveGeoJson(geojson: String){
-    console.log("recieved geojson")
-}
-
-function connectWebSocket(addr: String) {
+function connectWebSocket(addr: String, 
+    wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}) {
     // WebSocket connection
     socket = new WebSocket(`ws://${addr}`);
 
@@ -25,16 +17,32 @@ function connectWebSocket(addr: String) {
       console.log('WebSocket connection established.');
     });
 
+    var geojsonChunks : string[] = []
     // Listen for messages
     socket.addEventListener('message', (event) => {
-      console.log(event.data)
-      const msg = JSON.parse(event.data)
-      // call callbacks
-      wsStatusUpdate(msg.status) 
-      if(msg.geojson){
-          receiveGeoJson(msg.geojson)
-      }
-      console.log('Received message:', msg);
+        if(event.data instanceof Blob){
+            var reader = new FileReader();
+            reader.onload = () => {
+                console.log("Result: " + reader.result);
+                let msg = JSON.parse(reader.result?.toString() || "");
+                wsStatusUpdate(msg.status, msg.percent.toString()) 
+                if(msg.geojson_flag === "done"){
+                    var combinedChunks : string = "";
+                    geojsonChunks.forEach((chunk : string) =>{
+                        combinedChunks += chunk
+                    })
+                    wsGeoJsonUpdate(combinedChunks)
+                }
+                else if(msg.geojson_chunk){
+                    geojsonChunks.push(msg.geojson_chunk);
+                }
+            };
+            reader.readAsText(event.data);
+        }
+        else{
+            //Log error, need to maybe handle this but it seems like all WebSocket transmissions of JSONs come as blobs
+            console.log("Received non-blob from WebSocket: " + event.data)
+        }
     });
     // Connection closed
     socket.addEventListener('close', () => {
@@ -42,14 +50,14 @@ function connectWebSocket(addr: String) {
     });
   }
 
-export default function Stage() {
-    connectWebSocket(ApiService.getApiServiceUrl());
+export default function Stage({wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}}) {
+    connectWebSocket("localhost:8000/classify", wsStatusUpdate, wsGeoJsonUpdate);
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
     const modelTypes = ['XGBoost', 'Random Forest', 'Neural Network']
-    const [images, setImages] = useState<String[]>([])
-
+    //For dummy upload pipeline, starting with test file in state. Otherwise this would be empty
+    const [images, setImages] = useState<string[]>(["test.png"])
     useEffect(() => {
         const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
         fetch(imagesEndpoint, {
@@ -98,12 +106,11 @@ export default function Stage() {
         if (!selectedFile) {
             alert('No file selected!')
         }
-
         console.log('Uploading file: ' + selectedFile?.name);
-
+        setImages([... (images ?? []), ((selectedFile?.name ?? ""))]);
         let formData = new FormData();
         formData.append("image", selectedFile as File);
-
+        console.log(formData.get("image"))
         // development endpoint
         const uploadEndpoint = `${ApiService.getApiServiceUrl()}/upload/`
         fetch(uploadEndpoint, {
@@ -114,10 +121,10 @@ export default function Stage() {
 
     // function callback for classify button click
     const handleClassify = () => {
-
+        console.log(selectedImage)
         const classifyParams = {
             classifier_id: dataType,
-            processer_id: modelType,
+            processor_id: modelType,
             image_ref: selectedImage
         };
 
