@@ -3,6 +3,7 @@ import '../assets/css/MenuBar.css';
 import { useAuth0 } from "@auth0/auth0-react";
 import { LogoutButton } from "./logout-button";
 import { LoginButton } from "./login-button";
+import { Link } from "react-router-dom";
 
 interface MenuBarProps {
     isHomeRoute: boolean;
