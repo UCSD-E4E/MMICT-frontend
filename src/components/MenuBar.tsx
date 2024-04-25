@@ -19,17 +19,18 @@ export const MenuBar: React.FC<MenuBarProps> = ({ isHomeRoute }: MenuBarProps) =
     };
 
     return (
-        <div className={`nav-container ${isHomeRoute ? 'isHome' : ''}`}>
+        <div className={`nav-container`}>
             <div className="logo">
-                <a href="/" className="logo-link">Mangrove Monitoring</a>
+                <Link to="/" className="logo-link">Mangrove Monitoring</Link>
             </div>
             <div id="mainListDiv" className="main_list">
-                <a className="navlink" href="/AboutUs">About Us</a>
-                <a className="navlink" href="/Visualization">Visualization</a>
-                <a className="navlink" href="/Services">Services</a>
+                <Link className="navlink" to="/">Home</Link>
+                <Link className="navlink" to="/AboutUs">About Us</Link>
+                <Link className="navlink" to="/Visualization">Visualization</Link>
+                <Link className="navlink" to="/Services">Services</Link>
                 {isAuthenticated && (
                     <>
-                        <a className="navlink" href="/Profile">Profile</a>
+                        <Link className="navlink" to="/Profile">Profile</Link>
                     </>
                 )}
                 {!isAuthenticated && (
@@ -50,11 +51,11 @@ export const MenuBar: React.FC<MenuBarProps> = ({ isHomeRoute }: MenuBarProps) =
             </button>
             <div id='hamburger-nav' className={isHamburgerOpen ? 'visible' : ''}>
                 <div id="hamburger-links">
-                    <a className="hamburger-link" href="/">Home</a>
-                    <a className="hamburger-link" href='/AboutUs'>About Us</a>
-                    <a className="hamburger-link" href="/Visualization">Visualization</a>
-                    <a className="hamburger-link" href="#">Services</a>
-                    <a className="hamburger-link" href="/Profile">Profile</a>
+                    <Link className="hamburger-link" to="/">Home</Link>
+                    <Link className="hamburger-link" to='/AboutUs'>About Us</Link>
+                    <Link className="hamburger-link" to="/Visualization">Visualization</Link>
+                    <Link className="hamburger-link" to="#">Services</Link>
+                    <Link className="hamburger-link" to="/Profile">Profile</Link>
                     {!isAuthenticated && (
                             <>
                                 <LoginButton/>

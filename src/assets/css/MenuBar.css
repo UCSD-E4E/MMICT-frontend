@@ -20,7 +20,7 @@ body {
     height: 7vh;
     justify-content: space-between;
     align-items: center;
-    background-color: #BECEAB;
+    background-color: #062315;
 }
 
 .isHome {
@@ -37,7 +37,7 @@ body {
 .logo a {
     text-decoration: none;
     font-weight: bold;
-    color: black;
+    color: white;
     font-size: calc(2rem + 1vw);
 }
 
@@ -53,7 +53,7 @@ body {
     padding: 0;
     padding-right: 3rem;
     text-decoration: none;
-    color: black;
+    color: white;
     line-height: 65px;
     font-size: 2.4rem;
 }
