@@ -17,7 +17,8 @@ RUN npm run build
 
 ##### Start Deploy Container
 FROM nginx:alpine as production
-EXPOSE 80
+# http requests
+EXPOSE 80 
 
 WORKDIR /usr/share/nginx/html
 
@@ -25,5 +26,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 # Copy all static assets
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
+# Copy custom Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]

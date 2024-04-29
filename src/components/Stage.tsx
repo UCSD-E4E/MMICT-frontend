@@ -3,6 +3,9 @@ import "../assets/css/stage.css"
 import Dropdown from "./Dropdown";
 import XItemList from './XitemList';
 import ApiService from '../services/ApiService';
+//import * as dotenv from 'dotenv';
+
+//dotenv.config();
 
 let socket:WebSocket;
 
@@ -51,7 +54,7 @@ function connectWebSocket(addr: String,
   }
 
 export default function Stage({wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}}) {
-    connectWebSocket("localhost:8000/classify", wsStatusUpdate, wsGeoJsonUpdate);
+    connectWebSocket(`localhost:8082/classify`, wsStatusUpdate, wsGeoJsonUpdate);
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
