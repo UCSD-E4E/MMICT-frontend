@@ -18,14 +18,7 @@ import { MenuBar } from './components/MenuBar';
 import { useEffect, useState } from 'react';
 
 export default function App() {
-  const [isHomeRoute, setIsHomeRoute] = useState(window.location.pathname === "/");
   const { isLoading } = useAuth0();
-
-  useEffect(() => {
-    const handleRouteChange = () => setIsHomeRoute(window.location.pathname === "/");
-    window.addEventListener('popstate', handleRouteChange);
-    return () => window.removeEventListener('popstate', handleRouteChange);
-  }, []);
 
   if (isLoading) {
     return (
@@ -38,7 +31,7 @@ export default function App() {
   return (
     <div id='app'>
       <Router>
-      <MenuBar isHomeRoute={isHomeRoute}></MenuBar>
+      <MenuBar></MenuBar>
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/AboutUs' element={<AboutUs/>}/>

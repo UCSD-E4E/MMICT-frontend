@@ -18,12 +18,12 @@ export default function Home() {
   }, [user, isAuthenticated, getAccessTokenSilently]);
 
   return (
-    <div className="home-page-div">
-      <div className="home-page-title">
-        <h1>Mangrove Conservation</h1>
+    <div className="home-page-div home-page-div-on-mobile">
+      <div className="home-page-title home-page-title-on-mobile">
+        <h1 className="title-on-mobile">Mangrove Conservation</h1>
       </div>
       <div className="home-page-introduction">
-        <h2>Write a brief introduction about Mangrove Monitoring here</h2>
+        <h2 className="introduction-on-mobile">Write a brief introduction about Mangrove Monitoring here</h2>
       </div>
       <Link to="AboutUs" className="button-link">Learn More</Link>
     </div>

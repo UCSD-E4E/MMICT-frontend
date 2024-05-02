@@ -32,8 +32,12 @@ export default function ProjectInfo() {
           <div>
             <h1>Current Objectives</h1>
             <p>
-              Objectives include the development of powerful machine learning
-              algorithms.
+              We are currently developing an interactive UI
+              to let mangrove researchers across the world access our
+              machine learning tools.
+              <br/><br/>
+              Additionally, we are working on the backend of our application,
+              including our databases, API calls, and deployment systems.
             </p>
           </div>
         </div>

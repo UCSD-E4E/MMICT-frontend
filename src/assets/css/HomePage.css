@@ -56,3 +56,23 @@ img{
     text-decoration: none;
     cursor: pointer;
 }
+
+@media screen and (max-width: 768px) {
+    .title-on-mobile {
+        font-size: 50px;
+        margin-bottom: 60px;
+    }
+
+    .introduction-on-mobile {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .home-page-title-on-mobile {
+        margin-top: 40px;
+    }
+
+    .home-page-div-on-mobile {
+        padding-left: 30px;
+    }
+  }
