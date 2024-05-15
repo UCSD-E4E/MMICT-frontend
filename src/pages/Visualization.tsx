@@ -3,6 +3,7 @@ import LeafletMap from '../components/LeafletMap';
 import '../assets/css/visualization.css';
 import Stage from "../components/Stage";
 import ProgressBar from "@ramonak/react-progress-bar";
+import VisualizationForm from '../components/VisualizationForm';
 
 export default function Visualization() {
   return (
@@ -20,6 +21,7 @@ export default function Visualization() {
       <div id='classification'>
         <div id='left-menu'>
           <Stage/>
+          <VisualizationForm/>
         </div>
         <div id='right-menu'>
           <LeafletMap />

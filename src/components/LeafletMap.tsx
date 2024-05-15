@@ -2,8 +2,6 @@ import {
     MapContainer,
     TileLayer,
     LayersControl,
-    useMap,
-    Polygon, 
     GeoJSON
   } from 'react-leaflet';
   import { FullscreenControl } from 'react-leaflet-fullscreen';
@@ -16,7 +14,7 @@ import {
   import {useState, useRef} from 'react';
   import Toggle from './Toggle';
   import '../assets/css/map.css'
-const center = [40.63463151377654, -97.89969605983609];
+// const center = [40.63463151377654, -97.89969605983609];
 const { BaseLayer } = LayersControl;
 
 interface GeojsonStyle {
@@ -39,8 +37,6 @@ export default function LeafletMap() {
     const hideStyle = {opacity: 0, fillOpacity: 0}
 
     const [geojsonStyles, setGeojsonStyles] = useState<GeojsonStyle[]>(initialGeojsonStyles)
-
-    console.log(geojsonStyles)
 
     return (
       <div>
