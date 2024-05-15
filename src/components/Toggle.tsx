@@ -19,8 +19,8 @@ interface GeojsonStyle {
 
 export default function Toggle(props: ToggleProps){
     const initialOptions = [
-        {label: 'GeoJSON 1 (Jamaica)', isChecked: false, color: "blue"},
-        {label: 'GeoJSON 2 (Jamaica)', isChecked: false, color: "green"},
+        {label: 'GeoJSON 1', isChecked: false, color: "blue"},
+        {label: 'GeoJSON 2', isChecked: false, color: "green"},
     ]
     const [options, setOptions] = useState<Options[]>(initialOptions)
 

@@ -2,7 +2,6 @@ import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
 
 interface VisualizationFormData {
-  crs: string;
   date: string;
   location: string;
   rgbImagery: String;
@@ -11,7 +10,6 @@ interface VisualizationFormData {
 
 export default function VisualizationForm() {
   const [formData, setFormData] = useState<VisualizationFormData>({
-    crs: "",
     date: "",
     location: "",
     rgbImagery: "Use Satellite Provider",
@@ -24,7 +22,6 @@ export default function VisualizationForm() {
 
   useEffect(() => {
     setFormData({
-      crs: formData.crs,
       date: formData.date,
       location: formData.location,
       rgbImagery: RGBImagery,
@@ -58,7 +55,6 @@ export default function VisualizationForm() {
     e.preventDefault();
     console.log(formData);
     setFormData({
-      crs: "",
       date: "",
       location: "",
       rgbImagery: "",
@@ -71,22 +67,13 @@ export default function VisualizationForm() {
         backgroundColor: "white",
         fontSize: "20px",
         marginTop: "40px",
-        marginLeft: "40px",
-        marginRight: "20px",
+        marginLeft: "6%",
+        marginRight: "3%",
         padding: "10px",
+        border: "2px solid black",
       }}
     >
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "16px" }}>
-          <label htmlFor="crs">CRS:</label>
-          <input
-            type="text"
-            id="crs"
-            name="crs"
-            value={formData.crs}
-            onChange={handleChange}
-          />
-        </div>
         <div style={{ marginBottom: "16px" }}>
           <label htmlFor="date">Date:</label>
           <input

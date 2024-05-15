@@ -39,7 +39,7 @@ export default function LeafletMap() {
     const [geojsonStyles, setGeojsonStyles] = useState<GeojsonStyle[]>(initialGeojsonStyles)
 
     return (
-      <div>
+      <div className='map-container'>
         <Toggle geojsonStyles={geojsonStyles} setGeojsonStyles={setGeojsonStyles}/>
       <div style={{ width: '100%', height: '68vh'}} ref={elementRef}>
           
