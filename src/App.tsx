@@ -43,7 +43,7 @@ const router = createBrowserRouter([
 ])
 export default function App() {
   const [isHomeRoute, setIsHomeRoute] = useState(window.location.pathname === "/");
-  const { isLoading } = useAuth0();
+  // const { isLoading } = useAuth0();
 
   useEffect(() => {
     const handleRouteChange = () => setIsHomeRoute(window.location.pathname === "/");
@@ -51,13 +51,13 @@ export default function App() {
     return () => window.removeEventListener('popstate', handleRouteChange);
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="page-layout">
-        <PageLoader />
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="page-layout">
+  //       <PageLoader />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div id='app'>
