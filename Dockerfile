@@ -9,9 +9,10 @@ COPY package*.json ./
 # Using npm ci will install only from package-lock.json
 RUN npm ci
 
+ARG CACHEBUST=1
 # Copy all the project files
 COPY . .
-
+ARG CACHEBUST=1
 # Do the build
 RUN npm run build
 

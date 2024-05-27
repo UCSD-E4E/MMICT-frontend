@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "../assets/css/stage.css"
 import Dropdown from "./Dropdown";
 import XItemList from './XitemList';
 import ApiService from '../services/ApiService';
-//import * as dotenv from 'dotenv';
 
-//dotenv.config();
+let socket: WebSocket;
+// const messageQueue: string[] = [];
+// let isSocketOpen = false;
 
-let socket:WebSocket;
-
-function connectWebSocket(addr: String, 
-    wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}) {
+function connectWebSocket(addr: String, wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}) {
     // WebSocket connection
     socket = new WebSocket(`ws://${addr}`);
 
@@ -51,10 +49,26 @@ function connectWebSocket(addr: String,
     socket.addEventListener('close', () => {
       console.log('WebSocket connection closed.');
     });
+    
+    socket.addEventListener('error', (error) => {
+        console.error('WebSocket error:', error);
+        socket.close();
+    });
+
+    return socket;
+
   }
 
 export default function Stage({wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}}) {
-    connectWebSocket(`localhost:8082/classify`, wsStatusUpdate, wsGeoJsonUpdate);
+    
+    //connectWebSocket(`${process.env.REACT_APP_API_SERVER_URL}/classify`, wsStatusUpdate, wsGeoJsonUpdate);
+    const socketRef = useRef<WebSocket | null>(null);
+    
+    useEffect(() => {
+        if (!socketRef.current) {
+            socketRef.current = connectWebSocket(`localhost:8082/classify`, wsStatusUpdate, wsGeoJsonUpdate);
+        }
+    }, []);
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
@@ -131,7 +145,10 @@ export default function Stage({wsStatusUpdate = (status: string, progress: strin
             image_ref: selectedImage
         };
 
-        socket.send(JSON.stringify(classifyParams));
+        if (socketRef.current) {
+            socket.send(JSON.stringify(classifyParams));
+        }
+        
     }
 
     var stage = null;
