@@ -5,8 +5,6 @@ import XItemList from './XitemList';
 import ApiService from '../services/ApiService';
 
 let socket: WebSocket;
-// const messageQueue: string[] = [];
-// let isSocketOpen = false;
 
 function connectWebSocket(addr: String, wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}) {
     // WebSocket connection
@@ -61,18 +59,30 @@ function connectWebSocket(addr: String, wsStatusUpdate = (status: string, progre
 
 export default function Stage({wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}}) {
     
-    //connectWebSocket(`${process.env.REACT_APP_API_SERVER_URL}/classify`, wsStatusUpdate, wsGeoJsonUpdate);
     const socketRef = useRef<WebSocket | null>(null);
-    
+
+    // One reference to the websocket, prevents multiple websocket connections
     useEffect(() => {
         if (!socketRef.current) {
-            socketRef.current = connectWebSocket(`localhost:8082/classify`, wsStatusUpdate, wsGeoJsonUpdate);
+            console.log("Inside websocket connect useeffect hook!");
+            
+            // Test internal networking
+            // const testEndpoint = `http://localhost:8082`
+            // fetch(testEndpoint, {
+            //     method: 'GET',
+            // }).then((r: any) => {
+            //     console.log("Testing http endpoint on webserver");
+            //     console.log(r);
+            // })
+
+            socketRef.current = connectWebSocket(`localhost/ws/classify`, wsStatusUpdate, wsGeoJsonUpdate); // configure nginx to hit webserver endpoint thru reverse proxy
         }
     }, []);
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
     const modelTypes = ['XGBoost', 'Random Forest', 'Neural Network']
+    
     //For dummy upload pipeline, starting with test file in state. Otherwise this would be empty
     const [images, setImages] = useState<string[]>(["test.png"])
     useEffect(() => {
@@ -148,6 +158,7 @@ export default function Stage({wsStatusUpdate = (status: string, progress: strin
         if (socketRef.current) {
             socket.send(JSON.stringify(classifyParams));
         }
+        //socket.send(JSON.stringify(classifyParams));
         
     }
 
