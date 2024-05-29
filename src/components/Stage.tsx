@@ -65,17 +65,7 @@ export default function Stage({wsStatusUpdate = (status: string, progress: strin
     useEffect(() => {
         if (!socketRef.current) {
             console.log("Inside websocket connect useeffect hook!");
-            
-            // Test internal networking
-            // const testEndpoint = `http://localhost:8082`
-            // fetch(testEndpoint, {
-            //     method: 'GET',
-            // }).then((r: any) => {
-            //     console.log("Testing http endpoint on webserver");
-            //     console.log(r);
-            // })
-
-            socketRef.current = connectWebSocket(`localhost/ws/classify`, wsStatusUpdate, wsGeoJsonUpdate); // configure nginx to hit webserver endpoint thru reverse proxy
+            socketRef.current = connectWebSocket(`${ApiService.getApiServiceUrl()}/ws/classify`, wsStatusUpdate, wsGeoJsonUpdate); // configure nginx to hit webserver endpoint thru reverse proxy
         }
     }, []);
 
@@ -84,18 +74,19 @@ export default function Stage({wsStatusUpdate = (status: string, progress: strin
     const modelTypes = ['XGBoost', 'Random Forest', 'Neural Network']
     
     //For dummy upload pipeline, starting with test file in state. Otherwise this would be empty
+
     const [images, setImages] = useState<string[]>(["test.png"])
-    useEffect(() => {
-        const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
-        fetch(imagesEndpoint, {
-            method: 'GET',
-            body: JSON.stringify({ 
-                username: 'Edward', // TODO: pass in username
-            }),
-        }).then((r: any) => {
-            setImages(r)
-        })
-    }, [])
+    // useEffect(() => {
+    //     const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
+    //     fetch(imagesEndpoint, {
+    //         method: 'GET',
+    //         body: JSON.stringify({ 
+    //             username: 'Edward', // TODO: pass in username
+    //         }),
+    //     }).then((r: any) => {
+    //         setImages(r)
+    //     })
+    // }, [])
 
     // state needs to be raised here because the parent needs access to selected
     // varius dropdown selections
@@ -110,17 +101,17 @@ export default function Stage({wsStatusUpdate = (status: string, progress: strin
     // xlist
     const [XItems, setXItems] = useState<any[]>(['aaa', 'bbb'])
 
-    useEffect(() => {
-        const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
-        fetch(classificationsEndpoint, {
-            method: 'GET',
-            body: JSON.stringify({
-                username: 'Edward'
-            })
-        }).then((r: any) => {
-            setXItems(r)
-        })
-    }, [])
+    // useEffect(() => {
+    //     const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
+    //     fetch(classificationsEndpoint, {
+    //         method: 'GET',
+    //         body: JSON.stringify({
+    //             username: 'Edward'
+    //         })
+    //     }).then((r: any) => {
+    //         setXItems(r)
+    //     })
+    // }, [])
 
     const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target;
@@ -157,9 +148,7 @@ export default function Stage({wsStatusUpdate = (status: string, progress: strin
 
         if (socketRef.current) {
             socket.send(JSON.stringify(classifyParams));
-        }
-        //socket.send(JSON.stringify(classifyParams));
-        
+        }        
     }
 
     var stage = null;

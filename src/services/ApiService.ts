@@ -1,10 +1,10 @@
 export default class ApiService {
     static getApiServiceUrl(): string {
-        console.log(`This is supposed to be webserver address: ${process.env.REACT_APP_API_ADDRESS}`)
-        if (typeof process.env.REACT_APP_API_ADDRESS === 'undefined') {
+        console.log(`This is supposed to be the NGINX server address: ${window._env_.REACT_APP_NGINX_ADDRESS}`)
+        if (typeof window._env_.REACT_APP_NGINX_ADDRESS === 'undefined') {
             throw "API URL undefined!!"
         }
 
-        return process.env.REACT_APP_API_ADDRESS;
+        return window._env_.REACT_APP_NGINX_ADDRESS;
     }
 }
