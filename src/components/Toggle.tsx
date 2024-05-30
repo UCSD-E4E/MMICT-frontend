@@ -21,6 +21,10 @@ export default function Toggle(props: ToggleProps){
     const initialOptions = [
         {label: 'GeoJSON 1', isChecked: false, color: "blue"},
         {label: 'GeoJSON 2', isChecked: false, color: "green"},
+        {label: 'GeoJSON 3', isChecked: false, color: "green"},
+        {label: 'GeoJSON 4', isChecked: false, color: "green"},
+        {label: 'GeoJSON 5', isChecked: false, color: "green"},
+        {label: 'GeoJSON 6', isChecked: false, color: "green"},
     ]
     const [options, setOptions] = useState<Options[]>(initialOptions)
 
@@ -55,7 +59,7 @@ export default function Toggle(props: ToggleProps){
     return (
         <div className='toggle'>
             {options.map((option, index) => (
-                <div key={index}>
+                <div key={index} className='individual-toggle'>
                 <input
                 type="checkbox"
                 checked={option.isChecked}

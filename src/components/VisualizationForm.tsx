@@ -1,29 +1,34 @@
 import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import Dropdown from "./Dropdown";
+import type { LatLng } from "leaflet";
+import "../assets/css/VisualizationForm.css";
 
 interface VisualizationFormData {
   date: string;
-  location: string;
   rgbImagery: String;
   nirImagery: String;
 }
 
-export default function VisualizationForm() {
+interface VisualizationFormProps {
+  position: LatLng | null;
+  setPosition: (position: LatLng | null) => void;
+}
+
+export default function VisualizationForm(props: VisualizationFormProps) {
   const [formData, setFormData] = useState<VisualizationFormData>({
     date: "",
-    location: "",
-    rgbImagery: "Use Satellite Provider",
-    nirImagery: "Use File Upload",
+    rgbImagery: "Use Satellite",
+    nirImagery: "File Upload",
   });
-  const [RGBImagery, setRGBImagery] = useState<String>("");
-  const [RGBImageryFile, setRGBImageryFile] = useState<File>();
-  const [NIRImagery, setNIRImagery] = useState<String>("");
-  const [NIRImageryFile, setNIRImageryFile] = useState<File>();
+  const [RGBImagery, setRGBImagery] = useState<String>("Use Satellite");
+  const [RGBImageryFile, setRGBImageryFile] = useState<File | null>(null);
+  const [NIRImagery, setNIRImagery] = useState<String>("File Upload");
+  const [NIRImageryFile, setNIRImageryFile] = useState<File | null>(null);
+  const [errorMessage, setErrorMessage] = useState<String>("");
 
   useEffect(() => {
     setFormData({
       date: formData.date,
-      location: formData.location,
       rgbImagery: RGBImagery,
       nirImagery: NIRImagery,
     });
@@ -40,92 +45,116 @@ export default function VisualizationForm() {
   };
 
   const handleRGBFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {files} = e.target;
+    const { files } = e.target;
     const selectedFiles = files as FileList;
     setRGBImageryFile(selectedFiles?.[0]);
-  }
+  };
 
   const handleNIRFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {files} = e.target;
+    const { files } = e.target;
     const selectedFiles = files as FileList;
     setNIRImageryFile(selectedFiles?.[0]);
-  }
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formData);
-    setFormData({
-      date: "",
-      location: "",
-      rgbImagery: "",
-      nirImagery: "",
-    });
+
+    if (!formData.date) {
+      setErrorMessage("Please select a date");
+    } else if (RGBImagery === "File Upload" && !RGBImageryFile) {
+      setErrorMessage("Please upload file for RGB Imagery");
+    } else if (NIRImagery === "File Upload" && !NIRImageryFile) {
+      setErrorMessage("Please upload file for NIR Imagery");
+    } else if (
+      NIRImagery === "Use Satellite" &&
+      RGBImagery === "Use Satellite" &&
+      !props.position
+    ) {
+      setErrorMessage("Please select a location on the map");
+    } else {
+      setFormData({
+        date: "",
+        rgbImagery: "",
+        nirImagery: "",
+      });
+      props.setPosition(null);
+      setRGBImageryFile(null);
+      setNIRImageryFile(null);
+      setErrorMessage("");
+      setRGBImagery("");
+      setNIRImagery("");
+    }
   };
   return (
-    <div
-      style={{
-        backgroundColor: "white",
-        fontSize: "20px",
-        marginTop: "40px",
-        marginLeft: "6%",
-        marginRight: "3%",
-        padding: "10px",
-        border: "2px solid black",
-      }}
-    >
+    <div className="visualization-form-container">
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "16px" }}>
-          <label htmlFor="date">Date:</label>
+        <div className="date-selection-container">
+          <label htmlFor="date" className="date-label">
+            Date:
+          </label>
           <input
             type="date"
             id="date"
             name="date"
             value={formData.date}
             onChange={handleChange}
-            required
           />
         </div>
-        <div style={{ marginBottom: "16px" }}>
-          <label htmlFor="rgbImagery">RGB Imagery:</label>
+        <div className="imagery-container">
+          <label htmlFor="rgbImagery" className="imagery-label">
+            RGB Imagery
+          </label>
           <Dropdown
-            options={["File Upload", "Use Satellite Imagery"]}
+            options={["File Upload", "Use Satellite"]}
             selected={RGBImagery}
             setSelected={setRGBImagery}
           />
           {formData.rgbImagery === "File Upload" && (
-            <div className="upload">
+            <div className="upload file-upload">
               <input type="file" onChange={handleRGBFileChange}></input>
             </div>
           )}
         </div>
-        <div style={{ marginBottom: "16px" }}>
-          <label htmlFor="nirImagery">NIR Imagery:</label>
+        <div className="imagery-container">
+          <label htmlFor="nirImagery" className="imagery-label">
+            NIR Imagery
+          </label>
           <Dropdown
-            options={["File Upload", "Use Satellite Imagery"]}
+            options={["File Upload", "Use Satellite"]}
             selected={NIRImagery}
             setSelected={setNIRImagery}
           />
           {formData.nirImagery === "File Upload" && (
-            <div className="upload">
+            <div className="upload file-upload">
               <input type="file" onChange={handleNIRFileChange}></input>
             </div>
           )}
         </div>
-        {formData.rgbImagery === "Use Satellite Imagery" &&
-          formData.nirImagery === "Use Satellite Imagery" && (
-            <div style={{ marginBottom: "16px" }}>
-              <label htmlFor="location">Location:</label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                required
-              />
+        {formData.rgbImagery === "Use Satellite" &&
+          formData.nirImagery === "Use Satellite" && (
+            <div className="map-selection-container">
+              <label htmlFor="location">Location</label>
+              {props.position ? (
+                <div>
+                  <p>
+                    {Math.round(props.position?.lat * 1000) / 1000},{" "}
+                    {Math.round(props.position?.lng * 1000) / 1000}
+                  </p>
+                </div>
+              ) : (
+                <p className="map-selection-message">
+                  Select a location on the map
+                </p>
+              )}
             </div>
           )}
-        <button type="submit">Submit</button>
+        <div className="submission-container">
+          <button type="submit" className="submit-button">
+            Submit
+          </button>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </div>
       </form>
     </div>
   );

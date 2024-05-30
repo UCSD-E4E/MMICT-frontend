@@ -6,21 +6,26 @@
     margin-left: 6%;
     border: 2px solid black;
     align-items: center;
-    margin-top: 9.5%;
+    margin-top: 8%;
     padding-bottom: 2%;
   }
 
 .stage button {
-  font-family: "Quicksand", sans-serif;
-  font-size: 2.5rem;
-  border: 2px solid #DCDCDC;
-  border-radius: 15px;
-  background-color: white;
-  padding: 0.25em 2em;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  background-color: #007958;
+  text-decoration: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  width: fit-content;
+  
 }
 
 .stage button:hover {
-  background-color: #DCDCDC;
+  background-color: #16ad59;
 }
 
 .stage-upload {

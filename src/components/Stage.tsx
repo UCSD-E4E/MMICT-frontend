@@ -141,7 +141,7 @@ export default function Stage() {
         case 'Upload':
             stage = (<div className='stage-upload'>
                         <input type='file' onChange={handleSelectFile}></input>
-                        <button onClick={handleUpload}>Upload</button>
+                        <button onClick={handleUpload}>Submit</button>
                     </div>);
             break;
         case 'Classify':
