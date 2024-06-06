@@ -11,6 +11,7 @@ import Visualization from "./pages/Visualization";
 import Profile from "./pages/Profile";
 import AboutUs from './pages/AboutUs';
 import Services from './pages/Services';
+import Login from "./pages/Login"
 import PageLoader from './components/PageLoader';
 import { MenuBar } from './components/MenuBar';
 import { useEffect, useState } from 'react';
@@ -39,6 +40,11 @@ const router = createBrowserRouter([
   {
     path: "/PageLoader",
     element: <PageLoader />,
+  },
+  // Temporary, so that I can see the Login page
+  {
+    path: "/Login",
+    element: <Login />
   }
 ])
 export default function App() {
@@ -59,9 +65,18 @@ export default function App() {
     );
   }
 
+  const pathsExcludingMB = ["/Login"];  // hardcoding should be okay...
+  let menuBar;
+  if (pathsExcludingMB.includes(window.location.pathname)) {
+    menuBar = null;
+  } else {
+    menuBar = <MenuBar isHomeRoute={isHomeRoute}></MenuBar>;
+  }
+  console.log(menuBar);
+
   return (
     <div id='app'>
-      <MenuBar isHomeRoute={isHomeRoute}></MenuBar>
+      {menuBar}
       <RouterProvider router={router} />
     </div>
   );
