@@ -3,6 +3,8 @@ import '../assets/css/visualization.css';
 import Stage from "../components/Stage";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useState } from 'react';
+import VisualizationForm from '../components/VisualizationForm';
+import { LatLng } from 'leaflet';
 
 export default function Visualization() {
   const [statusLabel, setStatusLabel] = useState<string>("")
@@ -17,6 +19,7 @@ export default function Visualization() {
     setGeoJsons([... (geoJsons ?? []), geoJson]);
   }
 
+  const [position, setPosition] = useState<LatLng | null>(null);
   return (
     <div id='container'>
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -35,10 +38,12 @@ export default function Visualization() {
            wsStatusUpdate={updateStatus}
            wsGeoJsonUpdate={updateGeoJson}
           />
+          <VisualizationForm position={position} setPosition={setPosition}/>
         </div>
         <div id='right-menu'>
           <LeafletMap
             geoJsons={geoJsons}
+            position={position} setPosition={setPosition}
           />
         </div>
       </div>

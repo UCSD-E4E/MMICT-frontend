@@ -1,6 +1,6 @@
 #container {
   height:93vh;
-  background-color: #BECEAB;
+  background-color: white;
 }
 #classification {
   display: flex;
@@ -17,10 +17,11 @@
 }
 #left-menu {
   height: 100%;
-  width: 35%;
+  width: 20%;
   display: flex;
+  flex-direction: column;
 }
 #right-menu {
   height: 100%;
-  width: 65%;
+  width: 80%;
 }
