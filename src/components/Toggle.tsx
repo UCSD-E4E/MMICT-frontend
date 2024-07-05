@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import "../assets/css/toggle.css";
 
 interface ToggleProps {
-    showGeojsons: Boolean[],
-    toggleFn: Function
+    showGeojsons: Boolean[] // React.MutableRefObject<Boolean[]>
+    setShowGeojsons: Function
+    // toggleFn: Function
 }
 
 interface Checkbox {
@@ -22,10 +23,9 @@ export default function Toggle(props: ToggleProps){
         const newOptions = [...options]
         newOptions[index].isChecked = !options[index].isChecked
         setOptions(newOptions)
-        props.toggleFn(index, options[index].isChecked)
-        // const newGeojsons = [...props.showGeojsons]
-        // newGeojsons[index] = newOptions[index].isChecked
-        // props.setShowGeojsons(newGeojsons)
+        const newGeojsons = [...props.showGeojsons]
+        newGeojsons[index] = newOptions[index].isChecked
+        props.setShowGeojsons(newGeojsons)
     }
 
     useEffect(() =>{

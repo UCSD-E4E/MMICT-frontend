@@ -1,10 +1,11 @@
 import LeafletMap from '../components/LeafletMap';
 import '../assets/css/visualization.css';
-import Stage from "../components/Stage";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useState } from 'react';
-import VisualizationForm from '../components/VisualizationForm';
+import ClassifyForm from '../components/ClassifyForm';
 import { LatLng } from 'leaflet';
+import ImageUpload from '../components/ImageUpload';
+import Classifications from '../components/Classifications';
 
 export default function Visualization() {
   const [statusLabel, setStatusLabel] = useState<string>("")
@@ -19,6 +20,8 @@ export default function Visualization() {
     setGeoJsons([... (geoJsons ?? []), geoJson]);
   }
 
+  const [showGeojsons, setShowGeojsons] = useState<Boolean[]>([])
+  const [images, setImages] = useState<string[]>(["test.png"])
   const [position, setPosition] = useState<LatLng | null>(null);
   return (
     <div id='container'>
@@ -34,16 +37,28 @@ export default function Visualization() {
       />
       <div id='classification'>
         <div id='left-menu'>
-          <Stage
-           wsStatusUpdate={updateStatus}
-           wsGeoJsonUpdate={updateGeoJson}
+          <ImageUpload 
+            images={images}
+            setImages={setImages}
           />
-          <VisualizationForm position={position} setPosition={setPosition}/>
+          <ClassifyForm 
+            position={position} 
+            setPosition={setPosition} 
+            wsStatusUpdate={updateStatus} 
+            wsGeoJsonUpdate={updateGeoJson}
+            images={images}
+          />
+          <Classifications
+            showGeojsons={showGeojsons}
+            setShowGeojsons={setShowGeojsons}
+          />
         </div>
         <div id='right-menu'>
           <LeafletMap
             geoJsons={geoJsons}
             position={position} setPosition={setPosition}
+            showGeojsons={showGeojsons}
+            setShowGeojsons={setShowGeojsons}
           />
         </div>
       </div>

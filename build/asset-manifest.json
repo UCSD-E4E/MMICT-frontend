@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.4b3b839a.css",
+    "main.js": "/static/js/main.6b8c95dc.js",
+    "static/media/MangroveHome.jpg": "/static/media/MangroveHome.2e09bcdf2a92944b25a5.jpg",
+    "static/media/about-page-1.jpg": "/static/media/about-page-1.7571c589f15baee34137.jpg",
+    "static/media/about-page-2.jpg": "/static/media/about-page-2.f5f6babc2bc1a476c9ca.jpg",
+    "static/media/about-page-top.jpg": "/static/media/about-page-top.4c57545a5d83eb4d299c.jpg",
+    "index.html": "/index.html",
+    "main.4b3b839a.css.map": "/static/css/main.4b3b839a.css.map",
+    "main.6b8c95dc.js.map": "/static/js/main.6b8c95dc.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4b3b839a.css",
+    "static/js/main.6b8c95dc.js"
+  ]
+}

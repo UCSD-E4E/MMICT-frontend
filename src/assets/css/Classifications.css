@@ -1,0 +1,30 @@
+.service-title{
+    align-self: center;
+}
+.title-container{
+    align-self: center;
+}
+.classifications-container {
+    background-color: white;
+    margin-top: 4%;
+    margin-left: 6%;
+    margin-right: 3%;
+    margin-bottom: 10%;
+    padding: 10px;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .element-container {
+      margin-left: 6px;
+      font-size: 18px;
+  }
+
+  .no-classifications-text {
+      align-self: center;
+      font-size: 12px;
+      color: grey;
+  }
