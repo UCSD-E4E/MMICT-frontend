@@ -54,7 +54,6 @@ function connectWebSocket(addr: String, wsStatusUpdate = (status: string, progre
     });
 
     return socket;
-
   }
 
 export default function Stage({wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}}) {
@@ -139,7 +138,6 @@ export default function Stage({wsStatusUpdate = (status: string, progress: strin
 
     // function callback for classify button click
     const handleClassify = () => {
-        console.log(selectedImage)
         const classifyParams = {
             classifier_id: dataType,
             processor_id: modelType,

@@ -1,8 +1,9 @@
-import React, { ChangeEvent, FormEvent, useState, useEffect, useRef } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect, useRef } from "react";
 import Dropdown from "./Dropdown";
 import type { LatLng } from "leaflet";
 import "../assets/css/ClassifyForm.css";
 import ApiService from "../services/ApiService";
+
 let socket: WebSocket;
 
 const USE_SATELLITE_OPTION : String = "use_sat"
