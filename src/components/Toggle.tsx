@@ -18,6 +18,9 @@ export default function Toggle(props: ToggleProps){
         {label: 'GeoJSON 2 (Jamaica)', isChecked: false},
     ]
     const [options, setOptions] = useState<Checkbox[]>([])
+    const colors = ["black", "silver", "gray", "maroon", "red", "purple",
+        "green", "olive", "navy", "blue", "teal",
+    ]
 
     const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
         const newOptions = [...options]
