@@ -90,11 +90,11 @@ export default function Stage({wsStatusUpdate = (status: string, progress: strin
 
     //useEffect which uses setUserId to set the userId state variable
     // this is used in uploading the file
-    useEffect(() => {
-        if(user) {
-            setUserId(user.sub?.split("|")[1] || "");
-        }
-    }, []);
+    // useEffect(() => {
+    //     if(user) {
+    //         setUserId(user.sub?.split("|")[1] || "");
+    //     }
+    // }, []);
 
     // state needs to be raised here because the parent needs access to selected
     // varius dropdown selections
