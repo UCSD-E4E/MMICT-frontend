@@ -20,8 +20,24 @@ body {
     height: 7vh;
     justify-content: space-between;
     align-items: center;
-    background-color: #BECEAB;
+    background-color: #062315;
 }
+
+.light-navbar {
+    background-color: white;
+}
+
+.light-navbar .logo a,
+.light-navbar .navlink {
+    color: black;
+}
+
+.light-navbar .logo a:hover,
+.light-navbar .navlink:hover {
+    color: #007958;
+}
+
+.light-navbar 
 
 .isHome {
     position: fixed;
@@ -37,7 +53,7 @@ body {
 .logo a {
     text-decoration: none;
     font-weight: bold;
-    color: black;
+    color: white;
     font-size: calc(2rem + 1vw);
 }
 
@@ -53,7 +69,7 @@ body {
     padding: 0;
     padding-right: 3rem;
     text-decoration: none;
-    color: black;
+    color: white;
     line-height: 65px;
     font-size: 2.4rem;
 }
@@ -92,7 +108,7 @@ body {
 #hamburger-nav {
     left: 0;
     top: -100vh; 
-    background-color: #00E676;
+    background-color: #062315;
     width: 100vw;
     height: 100vh;
     visibility: hidden;
@@ -121,7 +137,7 @@ body {
 .hamburger-link {
     text-decoration: none;
     font-size: 3rem;
-    color: #000;
+    color: white;
 }
 
 .button__login, .button__logout{
@@ -158,7 +174,7 @@ body {
 /* Inspiration taken from Dicson https://codemyui.com/simple-hamburger-menu-x-mark-animation/ */
 
 .navTrigger i {
-    background-color: #000000;
+    background-color: white;
     border-radius: 2px;
     content: '';
     display: block;

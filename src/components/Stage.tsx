@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "../assets/css/stage.css"
 import Dropdown from "./Dropdown";
 import XItemList from './XitemList';
 import ApiService from '../services/ApiService';
 import { useAuth0 } from "@auth0/auth0-react";
 
-let socket:WebSocket;
+let socket: WebSocket;
 
-// Callback for status updates
-function wsStatusUpdate(status: String){
-    console.log("status is now:" + status)
-}
-// Callback for geojson
-function receiveGeoJson(geojson: String){
-    console.log("recieved geojson")
-}
-
-function connectWebSocket(addr: String) {
+function connectWebSocket(addr: String, wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}) {
     // WebSocket connection
     socket = new WebSocket(`ws://${addr}`);
 
@@ -26,52 +17,84 @@ function connectWebSocket(addr: String) {
       console.log('WebSocket connection established.');
     });
 
+    var geojsonChunks : string[] = []
     // Listen for messages
     socket.addEventListener('message', (event) => {
-      console.log(event.data)
-      const msg = JSON.parse(event.data)
-      // call callbacks
-      wsStatusUpdate(msg.status) 
-      if(msg.geojson){
-          receiveGeoJson(msg.geojson)
-      }
-      console.log('Received message:', msg);
+        if(event.data instanceof Blob){
+            var reader = new FileReader();
+            reader.onload = () => {
+                console.log("Result: " + reader.result);
+                let msg = JSON.parse(reader.result?.toString() || "");
+                wsStatusUpdate(msg.status, msg.percent.toString()) 
+                if(msg.geojson_flag === "done"){
+                    var combinedChunks : string = "";
+                    geojsonChunks.forEach((chunk : string) =>{
+                        combinedChunks += chunk
+                    })
+                    wsGeoJsonUpdate(combinedChunks)
+                }
+                else if(msg.geojson_chunk){
+                    geojsonChunks.push(msg.geojson_chunk);
+                }
+            };
+            reader.readAsText(event.data);
+        }
+        else{
+            //Log error, need to maybe handle this but it seems like all WebSocket transmissions of JSONs come as blobs
+            console.log("Received non-blob from WebSocket: " + event.data)
+        }
     });
     // Connection closed
     socket.addEventListener('close', () => {
       console.log('WebSocket connection closed.');
     });
+    
+    socket.addEventListener('error', (error) => {
+        console.error('WebSocket error:', error);
+        socket.close();
+    });
+
+    return socket;
   }
 
-export default function Stage() {
-    connectWebSocket(ApiService.getApiServiceUrl());
-    const [userId, setUserId] = useState<String>('');
-    const { user} = useAuth0();
+export default function Stage({wsStatusUpdate = (status: string, progress: string) => {}, wsGeoJsonUpdate = (json: string) => {}}) {
+    
+    const socketRef = useRef<WebSocket | null>(null);
+
+    // One reference to the websocket, prevents multiple websocket connections
+    useEffect(() => {
+        if (!socketRef.current) {
+            console.log("Inside websocket connect useeffect hook!");
+            socketRef.current = connectWebSocket(`${ApiService.getApiServiceUrl()}/ws/classify`, wsStatusUpdate, wsGeoJsonUpdate); // configure nginx to hit webserver endpoint thru reverse proxy
+        }
+    }, []);
 
     const options = ['Upload', 'Classify', 'Classifications']
     const dataTypes = ['Planetscope Superdove', 'Orbital Megalaser', 'Global Gigablaster']
     const modelTypes = ['XGBoost', 'Random Forest', 'Neural Network']
-    const [images, setImages] = useState<String[]>([])
+    
+    //For dummy upload pipeline, starting with test file in state. Otherwise this would be empty
 
-    useEffect(() => {
-        const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
-        fetch(imagesEndpoint, {
-            method: 'GET',
-            body: JSON.stringify({ 
-                username: 'Edward', // TODO: pass in username
-            }),
-        }).then((r: any) => {
-            setImages(r)
-        })
-    }, [])
+    const [images, setImages] = useState<string[]>(["test.png"])
+    // useEffect(() => {
+    //     const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
+    //     fetch(imagesEndpoint, {
+    //         method: 'GET',
+    //         body: JSON.stringify({ 
+    //             username: 'Edward', // TODO: pass in username
+    //         }),
+    //     }).then((r: any) => {
+    //         setImages(r)
+    //     })
+    // }, [])
 
     //useEffect which uses setUserId to set the userId state variable
     // this is used in uploading the file
-    useEffect(() => {
-        if(user) {
-            setUserId(user.sub?.split("|")[1] || "");
-        }
-    }, []);
+    // useEffect(() => {
+    //     if(user) {
+    //         setUserId(user.sub?.split("|")[1] || "");
+    //     }
+    // }, []);
 
     // state needs to be raised here because the parent needs access to selected
     // varius dropdown selections
@@ -86,17 +109,17 @@ export default function Stage() {
     // xlist
     const [XItems, setXItems] = useState<any[]>(['aaa', 'bbb'])
 
-    useEffect(() => {
-        const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
-        fetch(classificationsEndpoint, {
-            method: 'GET',
-            body: JSON.stringify({
-                username: 'Edward'
-            })
-        }).then((r: any) => {
-            setXItems(r)
-        })
-    }, [])
+    // useEffect(() => {
+    //     const classificationsEndpoint = `${ApiService.getApiServiceUrl()}/classifications`
+    //     fetch(classificationsEndpoint, {
+    //         method: 'GET',
+    //         body: JSON.stringify({
+    //             username: 'Edward'
+    //         })
+    //     }).then((r: any) => {
+    //         setXItems(r)
+    //     })
+    // }, [])
 
     const handleSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target;
@@ -109,13 +132,10 @@ export default function Stage() {
         if (!selectedFile) {
             alert('No file selected!')
         }
-
         console.log('Uploading file: ' + selectedFile?.name);
-
+        setImages([... (images ?? []), ((selectedFile?.name ?? ""))]);
         let formData = new FormData();
         formData.append("image", selectedFile as File);
-        formData.append("userid", userId.toString());
-
         // development endpoint
         const uploadEndpoint = `${ApiService.getApiServiceUrl()}/upload/`
         fetch(uploadEndpoint, {
@@ -126,14 +146,15 @@ export default function Stage() {
 
     // function callback for classify button click
     const handleClassify = () => {
-
         const classifyParams = {
             classifier_id: dataType,
-            processer_id: modelType,
+            processor_id: modelType,
             image_ref: selectedImage
         };
 
-        socket.send(JSON.stringify(classifyParams));
+        if (socketRef.current) {
+            socket.send(JSON.stringify(classifyParams));
+        }        
     }
 
     var stage = null;

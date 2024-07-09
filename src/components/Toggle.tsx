@@ -1,29 +1,23 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "../assets/css/toggle.css";
 
 interface ToggleProps {
-    geojsonStyles: GeojsonStyle[],
-    setGeojsonStyles: (geojsons: GeojsonStyle[]) => void,
+    showGeojsons: Boolean[] // React.MutableRefObject<Boolean[]>
+    setShowGeojsons: Function
+    // toggleFn: Function
 }
 
-interface Options {
+interface Checkbox {
     label: string,
     isChecked: boolean,
-    color: string
 }
-
-interface GeojsonStyle {
-    show: boolean,
-    color: string,
-  }
 
 export default function Toggle(props: ToggleProps){
     const initialOptions = [
-        {label: 'GeoJSON 1 (Jamaica)', isChecked: false, color: "blue"},
-        {label: 'GeoJSON 2 (Jamaica)', isChecked: false, color: "green"},
+        {label: 'GeoJSON 1 (Jamaica)', isChecked: false},
+        {label: 'GeoJSON 2 (Jamaica)', isChecked: false},
     ]
-    const [options, setOptions] = useState<Options[]>(initialOptions)
-
+    const [options, setOptions] = useState<Checkbox[]>([])
     const colors = ["black", "silver", "gray", "maroon", "red", "purple",
         "green", "olive", "navy", "blue", "teal",
     ]
@@ -32,25 +26,18 @@ export default function Toggle(props: ToggleProps){
         const newOptions = [...options]
         newOptions[index].isChecked = !options[index].isChecked
         setOptions(newOptions)
-        const newGeojsonStyles = [...props.geojsonStyles]
-        newGeojsonStyles[index].show = newOptions[index].isChecked
-        props.setGeojsonStyles(newGeojsonStyles)
+        const newGeojsons = [...props.showGeojsons]
+        newGeojsons[index] = newOptions[index].isChecked
+        props.setShowGeojsons(newGeojsons)
     }
 
-    const handleColorChange = (index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const newColor = event.target.value
-        
-        const newOptions = [...options]
-        newOptions[index].color = newColor
-        newOptions[index].isChecked = true
-
-        setOptions(newOptions)
-        
-        const newGeojsonStyles = [...props.geojsonStyles]
-        newGeojsonStyles[index].color = newOptions[index].color
-        newGeojsonStyles[index].show = true
-        props.setGeojsonStyles(newGeojsonStyles)
-    }
+    useEffect(() =>{
+        //Some strange workarounds here for the time being; when the new frontend stuff is done this should be returned to
+        if(props.showGeojsons.length > 0){
+            const newOptions = [...(options ?? []), {label: 'GeoJSON ' + (options.length + 1), isChecked: true}]
+            setOptions(newOptions)
+        }
+    }, [props.showGeojsons.length])
 
     return (
         <div className='toggle'>
@@ -60,20 +47,8 @@ export default function Toggle(props: ToggleProps){
                 type="checkbox"
                 checked={option.isChecked}
                 onChange={handleCheckboxChange(index)}
-                className='toggle-checkbox'
                 />
                 {' ' + option.label}
-                <select
-                value={option.color}
-                onChange={handleColorChange(index)}
-                className='toggle-dropdown'
-                >
-                {colors.map((color, index) => (
-                    <option key={index} value={color}>
-                    {color}
-                    </option>
-                ))}
-                </select>
                 </div>
             ))}
         </div>

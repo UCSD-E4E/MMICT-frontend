@@ -1,108 +1,137 @@
 import {
-    MapContainer,
-    TileLayer,
-    LayersControl,
-    useMap,
-    Polygon, 
-    GeoJSON,
-  } from 'react-leaflet';
-  import { GeoJsonObject } from 'geojson'
-  import mapData from "./Classify.json"
-  import mapData2 from "./labels.json"
-  import {useState, useRef} from 'react';
-  import Toggle from './Toggle';
+  MapContainer,
+  TileLayer,
+  GeoJSON,
+  useMapEvents,
+  Marker,
+  Popup,
+} from 'react-leaflet';
+import L, { LatLng } from 'leaflet';
+import { FullscreenControl } from "react-leaflet-fullscreen";
+import "react-leaflet-fullscreen/styles.css";
+import Control from "react-leaflet-custom-control";
+import { Download as DownloadIcon } from "@mui/icons-material";
+import { GeoJsonObject } from 'geojson'
+import {useEffect, useRef, useState} from 'react';
+import "../assets/css/map.css";
+import 'leaflet/dist/leaflet.css';
+
 const center = [40.63463151377654, -97.89969605983609];
-const { BaseLayer } = LayersControl;
 
-interface GeojsonStyle {
-  show: boolean,
-  color: string,
+L.Icon.Default.mergeOptions({
+iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+iconUrl: require('leaflet/dist/images/marker-icon.png'),
+shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
+
+const DEFAULT_COLORS = ["blue", "red", "green"]
+const DEFAULT_OPACITY = 1.0
+const DEFAULT_FILL_OPACITY = 0.2
+
+type Props = {
+  geoJsons: string[],
+  position: LatLng | null,
+  setPosition: (position: LatLng | null) => void,
+  showGeojsons: Boolean[],
+  setShowGeojsons: Function
 }
+export default function LeafletMap(props : Props) {
+  const elementRef = useRef<HTMLDivElement>(null);
 
-export default function LeafletMap() {
-    const elementRef = useRef<HTMLDivElement>(null);
+  // const [showGeojsons, setShowGeojsons] = useState<Boolean[]>([])
+  const [geoStyles, setGeoStyles] = useState<Map<number, {color: string, opacity: number, fillOpacity: number}>>(new Map<number, {color: string, opacity: number, fillOpacity: number}>());
+  const geoIds = useRef<number[]>([]);
 
-    const goFullScreen = () => {
-      const element = elementRef.current;
-      console.log('Full Screen')
-      if(element){
-        if(element.requestFullscreen){
-          element.requestFullscreen();
-        }
-      }
+  const handleDownload = () => {
+    // code to handle download
+  };
+
+  function initGeojsonStyle(geoId: number){
+    return {
+      color: DEFAULT_COLORS[geoId],
+      opacity: DEFAULT_OPACITY,
+      fillOpacity: DEFAULT_FILL_OPACITY
     }
+  }
+  function toggleGeoJsonHide(geoId: number, show: Boolean){
+    props.showGeojsons[geoId] = show
+    var currStyle = geoStyles.get(geoId) ?? initGeojsonStyle(geoId)
+    if(show){
+      currStyle.opacity = 1;
+      currStyle.fillOpacity = 0.2;
+    }
+    else{
+      currStyle.opacity = 0;
+      currStyle.fillOpacity = 0;
+    }
+    setGeoStyles(geoStyles => new Map(geoStyles.set(geoId, currStyle)))
+  }
 
-    const initialGeojsonStyles = [{
-      show: false,
-      color: "blue",
-    }, {
-      show: false,
-      color: "green"
-    }]
+  function asGeoJson(jsonStr: string){
+    let gjs = {
+      type: "FeatureCollection",
+      features: JSON.parse(jsonStr).features
+    } as GeoJsonObject
+    return gjs
+  }
 
-    const showStyle = {opacity: 1, fillOpacity: 0.2}
-    const hideStyle = {opacity: 0, fillOpacity: 0}
+  useEffect(()=>{
+    for(var i = 0; i < props.showGeojsons.length; i++){
+      toggleGeoJsonHide(geoIds.current[i], props.showGeojsons[i])
+    }
+  },[props.showGeojsons])
 
-    const [geojsonStyles, setGeojsonStyles] = useState<GeojsonStyle[]>(initialGeojsonStyles)
-
-    console.log(geojsonStyles)
-
-    return (
-      <div>
-        <Toggle geojsonStyles={geojsonStyles} setGeojsonStyles={setGeojsonStyles}/>
-      <div style={{ width: '100%', height: '68vh'}} ref={elementRef}>
-          
-          <MapContainer
-            center={[17.792094, -77.188759]}
-            zoom={13}
-            style={{ width: '96%', height: '100%', marginLeft: '2%', marginRight: '2%'}}
-            className="map"
-          >
-            <GeoJSON
-              data={{
-                type: "FeatureCollection",
-                features: mapData.features
-              } as GeoJsonObject}
-              style={geojsonStyles[0].show ? {...showStyle, color: geojsonStyles[0].color} : hideStyle}
-            />
-
-            <GeoJSON
-              data={{
-                type: "FeatureCollection",
-                features: mapData2.features
-              } as GeoJsonObject}
-              style={geojsonStyles[1].show ? {...showStyle, color: geojsonStyles[1].color} : hideStyle}
-            />
-            <LayersControl>
-            <BaseLayer checked name="OpenStreetMap">
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            </BaseLayer>
-            <BaseLayer name="Topography">
-            <TileLayer
-              attribution='Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-              url='https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
-            />
-            </BaseLayer>
-            <BaseLayer name="Background Imagery">
-            <TileLayer
-              attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-              url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-            />
-            </BaseLayer>
-          </LayersControl>
-            {/*
-            <Marker position={[51.505, -0.09]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker> */}
-          </MapContainer>
-          <button style={{marginLeft:"2%", fontSize:"1.5vw"}}>Download</button>
-          <button style={{fontSize:"1.5vw"}} onClick={goFullScreen}>Full Screen</button>
-        </div>
-        </div>
+  const LocationMarker = () => {
+    const map = useMapEvents({
+      click(e) {
+       props.setPosition(e.latlng) 
+      }
+    })
+  
+    return props.position === null ? null : (
+      <Marker position={props.position}>
+        <Popup>Selected Location</Popup>
+      </Marker>
     )
+  }
+  return (
+    <div className="map-container">
+      <div style={{ width: '100%', height: '73vh'}} ref={elementRef}>
+        <MapContainer
+          center={[17.792094, -77.188759]}
+          zoom={13}
+          className="map"
+        >
+          {
+            props.geoJsons.map((json, geoId) => {
+              if(!geoIds.current.includes(geoId)){
+                geoIds.current.push(geoId)
+                props.showGeojsons.push(true)
+              }
+              var tempStyle = geoStyles.get(geoId) ?? initGeojsonStyle(geoId)
+              let style = () => { 
+                return {
+                  color: tempStyle?.color,
+                  opacity: tempStyle?.opacity,
+                  fillOpacity: tempStyle?.fillOpacity
+                } 
+              }
+              return <GeoJSON data={asGeoJson(json)} key={geoId} style={style}/>
+            })
+          }
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <FullscreenControl />
+          <Control prepend={false} position="bottomleft">
+            <button className="download" onClick={handleDownload}>
+              <DownloadIcon />
+            </button>
+          </Control>
+          <LocationMarker/>
+        </MapContainer>
+      </div>
+    </div>
+  )
 }
