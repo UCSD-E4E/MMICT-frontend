@@ -8,10 +8,6 @@ body {
     font-size: 62.5%;
     font-size: 10px;
 }
-/*-- Inspiration taken from abdo steif -->
-/* --> https://codepen.io/abdosteif/pen/bRoyMb?editors=1100*/
-
-/* Navbar section */
 
 .nav-container {
     display: flex;
@@ -36,8 +32,6 @@ body {
 .light-navbar .navlink:hover {
     color: #007958;
 }
-
-.light-navbar 
 
 .isHome {
     position: fixed;
@@ -74,13 +68,11 @@ body {
     font-size: 2.4rem;
 }
 
-/* Home section */
-
 .home {
     width: 100%;
     height: 100vh;
     background-position: center top;
-	background-size:cover;
+    background-size: cover;
 }
 
 .nav {
@@ -90,7 +82,6 @@ body {
     transition: all 0.4s ease;
 }
 
-/* Hambuger menu */
 .navTrigger {
     display: none;
     z-index: 1000;
@@ -107,22 +98,22 @@ body {
 
 #hamburger-nav {
     left: 0;
-    top: -100vh; 
+    top: -100vh;
     background-color: #062315;
     width: 100vw;
     height: 100vh;
     visibility: hidden;
-    opacity: 0.8; 
+    opacity: 0.8;
     z-index: 999;
     position: absolute;
-    /* traansition for menu dropping down */
+    /* transition for menu dropping down */
     transition: top 1s ease, visibility 0s linear 1s, opacity 1s ease;
 }
 
 #hamburger-nav.visible {
     top: 0;
-    visibility: visible; 
-    opacity: 1; 
+    visibility: visible;
+    opacity: 1;
     transition: top 1s ease, visibility 0s, opacity 1s ease;
 }
 
@@ -140,32 +131,37 @@ body {
     color: white;
 }
 
-.button__login, .button__logout{
+.button__login, .button__logout {
     background-color: transparent;
     border: none;
     cursor: pointer;
+    padding: 0;
+    padding-right: 3rem;
+    color: white;
+    line-height: 65px;
+    font-size: 2.4rem;
+    text-decoration: none;
 }
 
-.navlink:hover, .logo-link:hover, .hamburger-link:hover{
+.navlink:hover, .logo-link:hover, .hamburger-link:hover, .button__login:hover, .button__logout:hover {
     color: #00E676;
 }
 
-/* Media qurey section */
-
+/* Media query section */
 @media screen and (min-width: 1024px) and (max-width: 1900px) {
     .nav-container {
         margin: 0;
     }
 }
 
-@media screen and (max-width:1024px) {
+@media screen and (max-width: 1024px) {
     .navTrigger {
         display: block;
     }
     .logo {
         margin-left: 15px;
     }
-    #mainListDiv, .navlink{
+    #mainListDiv, .navlink {
         display: none;
     }
 }

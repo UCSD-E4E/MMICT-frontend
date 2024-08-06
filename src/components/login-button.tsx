@@ -1,30 +1,27 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import React from "react";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
+import { useAuth } from '../services/AccountService';
+import accountService from '../services/AccountService';
 
-type LoginButtonProps = {
-  buttonClass?: string;
-};
+interface LoginButtonProps {
+  buttonClass: string;
+}
 
 export const LoginButton: React.FC<LoginButtonProps> = ({ buttonClass }) => {
-
-  const { loginWithRedirect } = useAuth0();
-
-  const handleLogin = async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: "/",
-      },
-      authorizationParams: {
-        prompt: "login",
-      },
-    });
-  };
-  // Use the passed `buttonClass` prop or default to 'hamburger-link'
-  const className = buttonClass || 'hamburger-link';
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   return (
-    <button className={`button__logout ${className}`} onClick={handleLogin}>
-      Log In
-    </button>
+    <GoogleLogin
+      onSuccess={credentialResponse => {
+        accountService.signin(credentialResponse);
+        login(credentialResponse);
+        navigate("/profile");
+      }}
+      onError={() => {
+        console.error('Login Failed');
+      }}
+    />
   );
 };

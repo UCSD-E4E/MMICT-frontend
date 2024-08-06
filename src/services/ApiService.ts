@@ -22,7 +22,6 @@ export default class ApiService {
                 return;
             }
 
-            // Transform the Auth0 user object to match MongoDB schema
             const userForDB = {
                 username: user.email, 
                 userId: userId,

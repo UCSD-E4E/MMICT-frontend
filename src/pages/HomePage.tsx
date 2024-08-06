@@ -1,23 +1,8 @@
 import { useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import "../assets/css/HomePage.css";
-import ApiService from "../services/ApiService";
 import { Link } from "react-router-dom";
 
 export default function Home() {
-  // const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-
-  // Whats the status on Auth0? Kane, Ryan?
-
-  // useEffect(() => {
-  //   const uploadUser = async () => {
-  //     if (isAuthenticated && user) {
-  //       const token = await getAccessTokenSilently();
-  //       ApiService.uploadUser(user, isAuthenticated, token);
-  //     }
-  //   };
-  //   uploadUser();
-  // }, [user, isAuthenticated, getAccessTokenSilently]);
 
   return (
     <div className="home-page-div home-page-div-on-mobile">
