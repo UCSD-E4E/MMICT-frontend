@@ -1,5 +1,5 @@
 ##### Start Build Container
-FROM node:18-alpine AS build
+FROM --platform=linux/amd64 node:18-alpine AS build
 
 # Create a working directory to perform our build in
 WORKDIR /usr/src/app

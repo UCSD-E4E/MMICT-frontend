@@ -3,6 +3,7 @@ import Dropdown from "./Dropdown";
 import type { LatLng } from "leaflet";
 import "../assets/css/ClassifyForm.css";
 import ApiService from "../services/ApiService";
+// const zlib = require('browserify-zlib');
 
 let socket: WebSocket;
 
@@ -10,7 +11,6 @@ const USE_SATELLITE_OPTION : String = "use_sat"
 function connectWebSocket(addr: String, wsStatusUpdate: Function, wsGeoJsonUpdate: Function) {
   // WebSocket connection
   socket = new WebSocket(`ws://${addr}`);
-
   // Connection opened
   socket.addEventListener('open', () => {
     // this is where you can allow things to be sent on the websocket
@@ -20,6 +20,7 @@ function connectWebSocket(addr: String, wsStatusUpdate: Function, wsGeoJsonUpdat
   var geojsonChunks : string[] = []
   // Listen for messages
   socket.addEventListener('message', (event) => {
+    console.log(event)
       if(event.data instanceof Blob){
           var reader = new FileReader();
           reader.onload = () => {
@@ -197,6 +198,7 @@ export default function ClassifyForm(props: ClassifyFormProps) {
     }
 
     if (socketRef.current) {
+        console.log('sending to webserver: ' + JSON.stringify(classifyParams))
         socket.send(JSON.stringify(classifyParams));
     }        
   }

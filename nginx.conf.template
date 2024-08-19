@@ -37,7 +37,6 @@ http {
         location = /50x.html {
             root   /usr/share/nginx/html;
         }
-
         # Reverse proxy directive configuration for WebSocket connections
         # NOTE: endpoints in webserver will need to start with /ws/ as well!!!
         location /ws/ {
