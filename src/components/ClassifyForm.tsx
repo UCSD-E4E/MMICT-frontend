@@ -3,7 +3,6 @@ import Dropdown from "./Dropdown";
 import type { LatLng } from "leaflet";
 import "../assets/css/ClassifyForm.css";
 import ApiService from "../services/ApiService";
-// const zlib = require('browserify-zlib');
 
 let socket: WebSocket;
 
@@ -61,14 +60,12 @@ function connectWebSocket(addr: String, wsStatusUpdate: Function, wsGeoJsonUpdat
 interface ClassifyFormData {
   date: string;
   rgbImagery: String;
-  nirImagery: String;
 }
 
 interface AdvancedFormData {
   rChannel: number,
   gChannel: number,
   bChannel: number,
-  nirChannel: number
 }
 
 interface ClassifyFormProps {
@@ -92,19 +89,15 @@ export default function ClassifyForm(props: ClassifyFormProps) {
 
   const [formData, setFormData] = useState<ClassifyFormData>({
     date: "",
-    rgbImagery: "File Upload",
-    nirImagery: "File Upload",
+    rgbImagery: "File Upload"
   });
   const [advancedFormData, setAdvancedFormData] = useState<AdvancedFormData>({
     rChannel: 1,
     gChannel: 2,
-    bChannel: 3,
-    nirChannel: 4
+    bChannel: 3
   })
   const [RGBImagery, setRGBImagery] = useState<String>("Use Satellite");
   const [RGBImageryFile, setRGBImageryFile] = useState<String>("");
-  const [NIRImagery, setNIRImagery] = useState<String>("File Upload");
-  const [NIRImageryFile, setNIRImageryFile] = useState<String>("");
   const [errorMessage, setErrorMessage] = useState<String>("");
 
   const [isExpanded, setIsExpanded] = useState<Boolean>(false)
@@ -113,10 +106,9 @@ export default function ClassifyForm(props: ClassifyFormProps) {
   useEffect(() => {
     setFormData({
       date: formData.date,
-      rgbImagery: RGBImagery,
-      nirImagery: NIRImagery,
+      rgbImagery: RGBImagery
     });
-  }, [RGBImagery, NIRImagery]);
+  }, [RGBImagery]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -145,56 +137,41 @@ export default function ClassifyForm(props: ClassifyFormProps) {
       setErrorMessage("Please select a date");
     } else if (RGBImagery === "File Upload" && !RGBImageryFile) {
       setErrorMessage("Please upload file for RGB Imagery");
-    } else if (NIRImagery === "File Upload" && !NIRImageryFile) {
-      setErrorMessage("Please upload file for NIR Imagery");
     } else if (
-      NIRImagery === "Use Satellite" &&
       RGBImagery === "Use Satellite" &&
       !props.position
     ) {
       setErrorMessage("Please select a location on the map");
     } else {
       const rgb = RGBImagery === "File Upload" ? RGBImageryFile : USE_SATELLITE_OPTION
-      const nir = NIRImagery === "File Upload" ? NIRImageryFile : USE_SATELLITE_OPTION
-      handleClassify(rgb, nir)
+      handleClassify(rgb)
       setFormData({
         date: "",
-        rgbImagery: "File Upload",
-        nirImagery: "File Upload",
+        rgbImagery: "File Upload"
       });
       setAdvancedFormData({
         rChannel: 1,
         gChannel: 2,
-        bChannel: 3,
-        nirChannel: 4
+        bChannel: 3
       })
       props.setPosition(null);
       setRGBImageryFile("");
-      setNIRImageryFile("");
       setErrorMessage("");
       setRGBImagery("File Upload");
-      setNIRImagery("File Upload");
     }
   };
 
-  const handleClassify = (rgb: String, nir: String) => {
-    // const classifyParams = {
-    //     classifier_id: dataType,
-    //     processor_id: modelType,
-    //     image_ref: selectedImage
-    // };
-    if(rgb === "" || nir === ""){
+  const handleClassify = (rgb: String) => {
+    if(rgb === ""){
       setErrorMessage("Request failed, please try again")
     }
     const classifyParams = {
       rgb_image_ref: rgb,
-      nir_image_ref: nir,
       date_of_capture: formData.date,
       location: props.position,
       r_channel: advancedFormData.rChannel,
       g_channel: advancedFormData.gChannel,
-      b_channel: advancedFormData.bChannel,
-      nir_channel: advancedFormData.nirChannel
+      b_channel: advancedFormData.bChannel
     }
 
     if (socketRef.current) {
@@ -265,20 +242,6 @@ export default function ClassifyForm(props: ClassifyFormProps) {
                 </div>
               </div>
             )}
-            {formData.nirImagery === "File Upload" && (
-              <div>
-                <label htmlFor="nirChannel" className="advanced-channel-label">
-                    NIR Channel:
-                </label>
-                <input
-                  type="number"
-                  id="nirChannel"
-                  name="nirChannel"
-                  value={advancedFormData.nirChannel}
-                  onChange={handleAdvancedChange}
-                />
-              </div>
-            )}
         </div>
       )
     }
@@ -325,23 +288,7 @@ export default function ClassifyForm(props: ClassifyFormProps) {
               </div>
             )}
           </div>
-          <div className="imagery-container">
-            <label htmlFor="nirImagery" className="imagery-label">
-              NIR Imagery
-            </label>
-            <Dropdown
-              options={["File Upload", "Use Satellite"]}
-              selected={NIRImagery}
-              setSelected={setNIRImagery}
-            />
-            {formData.nirImagery === "File Upload" && (
-              <div>
-                <Dropdown options={props.images} selected={NIRImageryFile} setSelected={setNIRImageryFile}/>
-              </div>
-            )}
-          </div>
-          {formData.rgbImagery === "Use Satellite" &&
-            formData.nirImagery === "Use Satellite" && (
+          {formData.rgbImagery === "Use Satellite" && (
               <div className="map-selection-container">
                 <label htmlFor="location" className='date-label'>Location</label>
                 {props.position ? (
