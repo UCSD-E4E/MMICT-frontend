@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../services/AccountService';
 import accountService from '../services/AccountService';
 import '../assets/css/Profile.css';
+import UserLinks from '../components/UserLinks';
 
 export const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, userData } = useAuth();
   const [token, setToken] = useState<string | null>(null);
-  const [verificationStatus, setVerificationStatus] = useState<string | null>(null);
 
   useEffect(() => {
     const jwt = accountService.jwt;
@@ -18,11 +18,6 @@ export const ProfilePage: React.FC = () => {
       navigate('/');
     }
   }, [navigate]);
-
-  const handleVerifyToken = async () => {
-    const isVerified = await accountService.verifyTokenAsync();
-    setVerificationStatus(isVerified ? 'Verified' : 'Not Verified');
-  };
 
   if (!isAuthenticated) {
     return (
@@ -37,8 +32,8 @@ export const ProfilePage: React.FC = () => {
   }
 
   const imageUrls = [
-    "https://s3.amazonaws.com/mangrove-monitoring-bucket/image1.jpg",
-    "https://s3.amazonaws.com/mangrove-monitoring-bucket/image2.jpg",
+    "https://s3.amazonaws.com/mangrove-monitoring-bucket/testing-image1.jpg",
+    "https://s3.amazonaws.com/mangrove-monitoring-bucket/testing-image2.jpg",
   ];
 
   return (
@@ -46,7 +41,11 @@ export const ProfilePage: React.FC = () => {
       <div id="left-profile-menu">
         <div id="inner-color-layer">
           <div id="profile-account">
-            <img id="profile-avatar" src={userData.picture || "https://www.w3schools.com/howto/img_avatar.png"} alt="Profile" />
+            <img
+              id="profile-avatar"
+              src={userData.picture || "https://www.w3schools.com/howto/img_avatar.png"}
+              alt="Profile"
+            />
             <div className="profile-info">
               <h2>{userData.name}</h2>
               <p><strong>Email:</strong> {userData.email}</p>
@@ -67,8 +66,10 @@ export const ProfilePage: React.FC = () => {
           ))}
         </ul>
       </div>
-      {/* <button className="unique-verify-button" onClick={handleVerifyToken}>Verify Token</button>
-      {verificationStatus && <p className="unique-verification-status">Token Status: {verificationStatus}</p>} */}
+      <div id="user-links">
+        <h2>User Links</h2>
+        {token && <UserLinks token={token} />}
+      </div>
     </div>
   );
 };

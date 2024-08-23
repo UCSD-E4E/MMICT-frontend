@@ -109,7 +109,7 @@ class AccountService {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ credential: JSON.parse(credential).credential }) // Ensure only the token is sent
+                body: JSON.stringify({ credential: JSON.parse(credential).credential })
             });
             return await response.text();
         } catch (ex) {
@@ -129,7 +129,7 @@ class AccountService {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ credential: JSON.parse(credential).credential }) // Ensure only the token is sent
+                body: JSON.stringify({ credential: JSON.parse(credential).credential })
             });
             console.log('Response from server:', response);
             return response.ok;
