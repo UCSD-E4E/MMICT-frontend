@@ -21,7 +21,7 @@ export default function Visualization() {
   }
 
   const [showGeojsons, setShowGeojsons] = useState<Boolean[]>([])
-  const [images, setImages] = useState<string[]>(["test.png"])
+  const [images, setImages] = useState<string[]>(["test.png", "jamaica3-31-34ortho-2-0.tif"])
   const [position, setPosition] = useState<LatLng | null>(null);
   return (
     <div id='container'>
