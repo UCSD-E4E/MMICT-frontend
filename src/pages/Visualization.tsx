@@ -17,6 +17,8 @@ export default function Visualization() {
     setProgressValue(progress);
   }
   const updateGeoJson = (geoJson: string)=>{
+    console.log(geoJson)
+    console.log(geoJsons)
     setGeoJsons([... (geoJsons ?? []), geoJson]);
   }
 

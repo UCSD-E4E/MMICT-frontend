@@ -74,7 +74,7 @@ export default function Stage({wsStatusUpdate = (status: string, progress: strin
     
     //For dummy upload pipeline, starting with test file in state. Otherwise this would be empty
 
-    const [images, setImages] = useState<string[]>(["test.png"])
+    const [images, setImages] = useState<string[]>(["jamaica3-31-34ortho-2-0.tif"])
     // useEffect(() => {
     //     const imagesEndpoint = `${ApiService.getApiServiceUrl()}/images`
     //     fetch(imagesEndpoint, {
