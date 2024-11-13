@@ -1,7 +1,7 @@
 import LeafletMap from '../components/LeafletMap';
 import '../assets/css/visualization.css';
 import ProgressBar from "@ramonak/react-progress-bar";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ClassifyForm from '../components/ClassifyForm';
 import { LatLng } from 'leaflet';
 import ImageUpload from '../components/ImageUpload';
@@ -17,11 +17,13 @@ export default function Visualization() {
     setProgressValue(progress);
   }
   const updateGeoJson = (geoJson: string)=>{
-    setGeoJsons([... (geoJsons ?? []), geoJson]);
+    setGeoJsons((geoJsons) => [...geoJsons, geoJson]);
+    console.log('updating geojsons with: ')
+    console.log(geoJson)
   }
 
   const [showGeojsons, setShowGeojsons] = useState<Boolean[]>([])
-  const [images, setImages] = useState<string[]>(["test.png", "jamaica3-31-34ortho-2-0.tif"])
+  const [images, setImages] = useState<string[]>(["jamaica3-31-34ortho-0-0.tif", "jamaica3-31-34ortho-0-1.tif", "jamaica3-31-34ortho-1-0.tif", "jamaica3-31-34ortho-1-1.tif", "jamaica3-31-34ortho-1-2.tif", "jamaica3-31-34ortho-2-0.tif", "jamaica3-31-34ortho-2-1.tif", "jamaica3-31-34ortho-2-2.tif", "jamaica3-38-40.4-6ortho-0-0.tif", "jamaica3-38-40.4-6ortho-0-1.tif", "jamaica3-38-40.4-6ortho-0-2.tif", "jamaica3-38-40.4-6ortho-1-0.tif", "jamaica3-38-40.4-6ortho-1-1.tif", "jamaica3-38-40.4-6ortho-1-2.tif", "jamaica3-38-40.4-6ortho-2-0.tif", "jamaica3-38-40.4-6ortho-2-1.tif", "jamaica3-38-40.4-6ortho-2-2.tif", "jamaica3-38-40.4-6ortho-3-1.tif", "jamaica3-38-40.4-6ortho-3-2.tif", "jamaica3-38-40.4-6ortho-3-3.tif", "jamaica3-38-40.4-6ortho-4-2.tif", "jamaica3-38-40.4-6ortho-4-3.tif"])
   const [position, setPosition] = useState<LatLng | null>(null);
   return (
     <div id='container'>

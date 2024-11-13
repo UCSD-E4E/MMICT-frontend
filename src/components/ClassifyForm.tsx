@@ -32,6 +32,7 @@ function connectWebSocket(addr: String, wsStatusUpdate: Function, wsGeoJsonUpdat
                       combinedChunks += chunk
                   })
                   wsGeoJsonUpdate(combinedChunks)
+                  geojsonChunks = []
               }
               else if(msg.geojson_chunk){
                   geojsonChunks.push(msg.geojson_chunk);
