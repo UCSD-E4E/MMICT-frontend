@@ -33,6 +33,7 @@ function connectWebSocket(addr: String, wsStatusUpdate: Function, wsGeoJsonUpdat
                   })
                   console.log('updating geojson list')
                   wsGeoJsonUpdate(combinedChunks)
+                  geojsonChunks = []
               }
               else if(msg.geojson_chunk){
                   geojsonChunks.push(msg.geojson_chunk);

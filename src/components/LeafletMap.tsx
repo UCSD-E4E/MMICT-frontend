@@ -1,6 +1,7 @@
 import {
   MapContainer,
   TileLayer,
+  LayersControl,
   GeoJSON,
   useMapEvents,
   Marker,
@@ -16,6 +17,7 @@ import {useEffect, useRef, useState} from 'react';
 import "../assets/css/map.css";
 import 'leaflet/dist/leaflet.css';
 
+const { BaseLayer } = LayersControl;
 const center = [40.63463151377654, -97.89969605983609];
 
 L.Icon.Default.mergeOptions({
@@ -24,7 +26,7 @@ iconUrl: require('leaflet/dist/images/marker-icon.png'),
 shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 });
 
-const DEFAULT_COLORS = ["blue", "red", "green"]
+const DEFAULT_COLORS = ["blue"]
 const DEFAULT_OPACITY = 1.0
 const DEFAULT_FILL_OPACITY = 0.2
 
@@ -43,12 +45,30 @@ export default function LeafletMap(props : Props) {
   const geoIds = useRef<number[]>([]);
 
   const handleDownload = () => {
-    // code to handle download
+    for(var i = 0; i < props.geoJsons.length; i++){
+      const geoJson = props.geoJsons[i]
+      // create file in browser
+      const fileName = "geojson-chunk-" + i;
+      const json = JSON.stringify(geoJson, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const href = URL.createObjectURL(blob);
+    
+      // create "a" HTLM element with href to file
+      const link = document.createElement("a");
+      link.href = href;
+      link.download = fileName + ".json";
+      document.body.appendChild(link);
+      link.click();
+    
+      // clean up "a" element & remove ObjectURL
+      document.body.removeChild(link);
+      URL.revokeObjectURL(href);
+    }
   };
 
   function initGeojsonStyle(geoId: number){
     return {
-      color: DEFAULT_COLORS[geoId],
+      color: DEFAULT_COLORS[geoId % DEFAULT_COLORS.length],
       opacity: DEFAULT_OPACITY,
       fillOpacity: DEFAULT_FILL_OPACITY
     }
@@ -94,6 +114,7 @@ export default function LeafletMap(props : Props) {
       </Marker>
     )
   }
+
   return (
     <div className="map-container">
       <div style={{ width: '100%', height: '73vh'}} ref={elementRef}>
@@ -103,7 +124,7 @@ export default function LeafletMap(props : Props) {
           className="map"
         >
           {
-            props.geoJsons.map((json, geoId) => {
+            props.geoJsons.map((json, geoId, arr) => {
               if(!geoIds.current.includes(geoId)){
                 geoIds.current.push(geoId)
                 props.showGeojsons.push(true)
@@ -116,13 +137,29 @@ export default function LeafletMap(props : Props) {
                   fillOpacity: tempStyle?.fillOpacity
                 } 
               }
-              return <GeoJSON data={asGeoJson(json)} key={geoId} style={style}/>
+              return <GeoJSON data={asGeoJson(json)} style={style}/>
             })
           }
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+          <LayersControl>
+            <BaseLayer checked name="OpenStreetMap">
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            </BaseLayer>
+            <BaseLayer name="Topography">
+            <TileLayer
+              attribution='Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+              url='https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
+            />
+            </BaseLayer>
+            <BaseLayer name="Background Imagery">
+            <TileLayer
+              attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+              url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+            />
+            </BaseLayer>
+          </LayersControl>
           <FullscreenControl />
           <Control prepend={false} position="bottomleft">
             <button className="download" onClick={handleDownload}>

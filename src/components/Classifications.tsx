@@ -63,7 +63,10 @@ export default function Classifications(props: ClassificationsProps){
                         checked={option.isChecked}
                         onChange={handleCheckboxChange(index)}
                         />
-                        {' ' + option.label}
+                        <input
+                        type="text"
+                        defaultValue={' ' + option.label}
+                        />
                     </div>
                 ))}
             </div>
